@@ -1,3 +1,6 @@
+#Cmake find for Asset Import library
+#Original found here https://github.com/assimp/assimp/blob/master/cmake-modules/Findassimp.cmake
+#modified by Brian McDonald on 2/6/16 to work with Mac OS(Assimp installed from MacPorts)
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	set(ASSIMP_ARCHITECTURE "64")
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -55,13 +58,17 @@ else(WIN32)
 	find_path(
 	  assimp_INCLUDE_DIRS
 	  NAMES postprocess.h scene.h version.h config.h cimport.h
-	  PATHS /usr/include/assimp
+	  PATHS
+		/usr/include/assimp 
+		/opt/local/include/assimp
 	)
 
 	find_library(
 	  assimp_LIBRARIES
 	  NAMES assimp
-	  PATHS /usr/lib/
+	  PATHS
+		/usr/lib/
+		/opt/local/lib/
 	)
 
 	if (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
