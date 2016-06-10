@@ -29,8 +29,21 @@ void GameApplication::createWindow(const string& windowTitle,const unsigned int 
 		m_WindowHeight=height;
 }
 
-bool GameApplication::init()
+void GameApplication::parseConfig(int args,char * arg[])
 {
+  //parse config file
+  XMLOptionsParser xmlParser=XMLOptionsParser("settings.xml");
+  xmlParser.parse(m_Options);
+	//parse command line arguments into keyvalue pairs, this should
+	//overide options in config files
+  CommandLineParser commandLineParser=CommandLineParser(args,arg);
+  commandLineParser.parse(m_Options);
+}
+
+
+bool GameApplication::init(int args,char * arg[])
+{
+  parseConfig(args,arg);
 	//ChangeWorkingDirectory();
 	//Controls the game loop
 	m_bIsRunning = true;
@@ -57,8 +70,9 @@ bool GameApplication::init()
 		std::cout << "ERROR	TTF_Init:	" << TTF_GetError();
 		return false;
 	}
-
-	createWindow("GP2BaseCode",m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
+  m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
+  m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
+	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
 	//Init Scene
 	initScene();
 	return true;

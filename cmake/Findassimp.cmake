@@ -59,7 +59,7 @@ else(WIN32)
 	  assimp_INCLUDE_DIRS
 	  NAMES postprocess.h scene.h version.h config.h cimport.h
 	  PATHS
-		/usr/include/assimp 
+		/usr/include/assimp
 		/opt/local/include/assimp
 	)
 
