@@ -1,5 +1,5 @@
 #include "XMLOptionsParser.h"
-#include "TinyXML.h"
+#include "tinyxml.h"
 
 XMLOptionsParser::XMLOptionsParser(const string& filename)
 {
@@ -31,9 +31,11 @@ void XMLOptionsParser::parse(ProgramOptions &options)
 
   //We should always ignore root
   hRoot=TiXmlHandle(pCurrentElement);
+  //iterate through all elements
   for( pCurrentElement = pCurrentElement->FirstChildElement(); pCurrentElement;
     pCurrentElement = pCurrentElement->NextSiblingElement() )
   {
+    //add all attributes
     for (pCurrentAttribute=pCurrentElement->FirstAttribute();pCurrentAttribute;
       pCurrentAttribute=pCurrentAttribute->Next())
     {

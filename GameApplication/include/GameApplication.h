@@ -5,11 +5,12 @@
 #include "CommandLineParser.h"
 #include "XMLOptionsParser.h"
 #include "ProgramOptions.h"
+#include "utils/NonCopyable.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
 //and some of the methods to create your own game
-class GameApplication
+class GameApplication:public NonCopyable
 {
 public:
 	//Constructor
@@ -44,12 +45,6 @@ public:
 	void run();
 
 	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
-private:
-	//this is the C++0x11 way  of disabling the copy constuctor and copy assignment
-	//these are generated for you by the compiler, if you don't want copying
-	//then do the following!
-	GameApplication(const GameApplication&)[ = delete;
-	GameApplication & operator=(const GameApplication&) = delete;
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;

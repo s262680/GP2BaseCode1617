@@ -9,6 +9,11 @@
 #include <vector>
 #include <memory>
 #include <map>
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <chrono>
+#include <ctime>
 
 //Name space std, so we don't need to do std::vector
 using namespace std;
