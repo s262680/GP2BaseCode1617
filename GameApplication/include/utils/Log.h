@@ -1,8 +1,8 @@
 #ifndef _LOG_H
 #define _LOG_H
 
-#include "Common.h"
-#include "utils/NonCopyable.h"
+#include "../Common.h"
+#include "NonCopyable.h"
 
 #define LOG(level,format,...) Log::get().write(level,format,__VA_ARGS__)
 #define CREATELOG(name) Log::get().create(name)

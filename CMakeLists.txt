@@ -8,17 +8,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${project_SOURCE_DIR}/cmake")
 set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} pthread)
 
 
-find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 find_package(SDL2_TTF REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
-find_package(assimp REQUIRED)
 
 add_subdirectory(GameApplication)
 add_executable(GP2BaseCode1617 src/main.cpp src/MyGame.cpp include/MyGame.h)
-include_directories(GP2BaseCode1617 GameApplication/include/ include/ ${OPENGL_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS})
+include_directories(GP2BaseCode1617 GameApplication/include/ include/  ${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS})
 
 target_link_libraries (GP2BaseCode1617 GameApplication)
 

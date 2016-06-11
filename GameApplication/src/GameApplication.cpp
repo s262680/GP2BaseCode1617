@@ -1,12 +1,13 @@
 #include "GameApplication.h"
 #include "utils/Log.h"
+#include "graphics/NullRenderer.h"
 
 GameApplication::GameApplication()
 {
  	m_pWindow=nullptr;
 	m_WindowWidth=640;
 	m_WindowHeight=480;
-	m_WindowCreationFlags=0;
+	m_WindowCreationFlags=SDL_WINDOW_OPENGL;
   CREATELOG("log.txt");
 }
 
@@ -14,6 +15,19 @@ GameApplication::~GameApplication()
 {
   CLOSELOG();
 	destroy();
+}
+
+void GameApplication::createRenderer(const string& rendererName)
+{
+  LOG(INFO,"Creating %s",rendererName.c_str());
+  //create a null renderer so at least we can exit gracefully
+  m_CurrentRenderer=unique_ptr<IRenderer>(new NullRenderer);
+  
+  auto newRenderer=move(CreateRenderer(m_Options,SDL_GetWindowID(m_pWindow)));
+  if (!newRenderer)
+  {
+    m_CurrentRenderer=move(newRenderer);
+  }
 }
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
@@ -83,7 +97,10 @@ bool GameApplication::init(int args,char * arg[])
   m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
   m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
 	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
-	//Init Scene
+
+  createRenderer(m_Options.getOption("RendererName"));
+
+  //Init Scene
 	initScene();
 	return true;
 }
@@ -99,6 +116,9 @@ void GameApplication::update()
 
 void GameApplication::render()
 {
+  m_CurrentRenderer->begin(vec4(0.0f,0.0f,0.0f,1.0f));
+
+  m_CurrentRenderer->end();
 }
 
 void GameApplication::onRenderGUI()

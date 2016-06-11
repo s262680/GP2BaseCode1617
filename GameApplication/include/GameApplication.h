@@ -6,6 +6,7 @@
 #include "XMLOptionsParser.h"
 #include "ProgramOptions.h"
 #include "utils/NonCopyable.h"
+#include "graphics/Renderer.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -45,6 +46,7 @@ public:
 	void run();
 
 	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
+	void createRenderer(const string& rendererName);
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;
@@ -59,5 +61,7 @@ protected:
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
+
+	unique_ptr<IRenderer> m_CurrentRenderer;
 };
 #endif
