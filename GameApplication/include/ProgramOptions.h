@@ -14,6 +14,17 @@ public:
   float getOptionAsFloat(const string& name);
   int getOptionAsInt(const string& name);
   bool getOptionAsBool(const string& name);
+  map<string,string>::iterator begin()
+  {
+    return m_Options.begin();
+  };
+
+  map<string,string>::iterator end()
+  {
+    return m_Options.end();
+  };
+
+  friend ostream& operator<<(ostream& os, ProgramOptions& options);
 private:
   map<string,string> m_Options;
 };

@@ -14,6 +14,7 @@
 #include <queue>
 #include <chrono>
 #include <ctime>
+#include <cstdarg>
 
 //Name space std, so we don't need to do std::vector
 using namespace std;

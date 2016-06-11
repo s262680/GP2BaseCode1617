@@ -4,25 +4,17 @@
 #include "Common.h"
 #include "utils/NonCopyable.h"
 
+#define LOG(level,format,...) Log::get().write(level,format,__VA_ARGS__)
+#define CREATELOG(name) Log::get().create(name)
+#define CLOSELOG() Log::get().close()
+#define FLUSHLOG() Log::get().flush()
+
 enum LogLevel
 {
-  INFO=1,
-  WARNING=2,
-  ERROR=3,
-}
-
-//enumeration types (both scoped and unscoped) can have overloaded operators
-ostream& operator<<(std::ostream& os, LogLevel level)
-{
-    switch(level)
-    {
-        case INFO   : os << "INFO";    break;
-        case WARNING: os << "WARNING"; break;
-        case ERROR : os << "ERROR";  break;
-        default    : os.setstate(std::ios_base::failbit);
-    }
-    return os;
-}
+  INFO=0,
+  WARNING=1,
+  ERROR=2,
+};
 
 class Log:public NonCopyable
 {
@@ -30,15 +22,22 @@ public:
   ~Log();
 
   void create(const string& filename);
-  void log(const char* format,...);
+  void write(unsigned int level,const char* format, ...);
   void flush();
   void close();
-  void setLogLevel(LogLevel level);
+  void setLogLevel(unsigned int level);
+
+  static Log& get(){
+    static Log instance;
+    return instance;
+  };
+
 private:
   Log();
   unsigned int m_CurrentLevel;
   ofstream m_FileStream;
   queue<string> m_LogMessages;
-}
+  int m_MessageBufferSize;
+};
 
 #endif

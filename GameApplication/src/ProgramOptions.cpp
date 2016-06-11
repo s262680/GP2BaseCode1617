@@ -1,5 +1,16 @@
 #include "ProgramOptions.h"
 
+ostream& operator<<(std::ostream& os, ProgramOptions& options)
+{
+    auto begin=options.begin();
+    auto end=options.end();
+    for(auto iter=begin;iter!=end;++iter)
+    {
+      os<<iter->first<<" = "<<iter->second<<" ";
+    }
+    return os;
+}
+
 ProgramOptions::ProgramOptions()
 {
 

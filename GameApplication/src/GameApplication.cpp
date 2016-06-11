@@ -1,4 +1,5 @@
 #include "GameApplication.h"
+#include "utils/Log.h"
 
 GameApplication::GameApplication()
 {
@@ -6,15 +7,18 @@ GameApplication::GameApplication()
 	m_WindowWidth=640;
 	m_WindowHeight=480;
 	m_WindowCreationFlags=0;
+  CREATELOG("log.txt");
 }
 
 GameApplication::~GameApplication()
 {
+  CLOSELOG();
 	destroy();
 }
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
 {
+  LOG(INFO,"Window Created %s Width -%d Height -%d",windowTitle.c_str(),width,height);
 	//Create a window
 	m_pWindow = SDL_CreateWindow(
 		windowTitle.c_str(),             // window title
@@ -31,13 +35,20 @@ void GameApplication::createWindow(const string& windowTitle,const unsigned int 
 
 void GameApplication::parseConfig(int args,char * arg[])
 {
+  stringstream ss;
   //parse config file
   XMLOptionsParser xmlParser=XMLOptionsParser("settings.xml");
   xmlParser.parse(m_Options);
+  ss<<m_Options;
+  LOG(INFO,"Settings Parsed\n%s",ss.str().c_str());
+  ss.str( std::string());
+  ss.clear();
 	//parse command line arguments into keyvalue pairs, this should
 	//overide options in config files
   CommandLineParser commandLineParser=CommandLineParser(args,arg);
   commandLineParser.parse(m_Options);
+  ss<<m_Options;
+  LOG(INFO,"Command Line Parsed\n%s",ss.str().c_str());
 }
 
 
@@ -51,8 +62,8 @@ bool GameApplication::init(int args,char * arg[])
 	// init everyting - SDL, if it is nonzero we have a problem
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
-		std::cout << "ERROR SDL_Init " << SDL_GetError() << std::endl;
-
+		//std::cout << "ERROR SDL_Init " << SDL_GetError() << std::endl;
+    LOG(ERROR,"SDL can't be initialised %s",SDL_GetError());
 		return false;
 	}
 
@@ -60,14 +71,13 @@ bool GameApplication::init(int args,char * arg[])
 	int	imageInitFlags = IMG_INIT_JPG | IMG_INIT_PNG;
 	int	returnInitFlags = IMG_Init(imageInitFlags);
 	if (((returnInitFlags)&	(imageInitFlags)) != imageInitFlags)	{
-
-		cout << "ERROR	SDL_Image	Init	" << IMG_GetError() << endl;
+    LOG(ERROR,"SDL Image Can't be Initialised %s",IMG_GetError());
 		return false;
 	}
 
 	//Initialise SDL TTF
 	if (TTF_Init() == -1)	{
-		std::cout << "ERROR	TTF_Init:	" << TTF_GetError();
+    LOG(ERROR,"SDL TTF Can't be Initialised %s",TTF_GetError());
 		return false;
 	}
   m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");

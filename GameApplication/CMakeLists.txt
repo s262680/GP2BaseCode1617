@@ -12,8 +12,9 @@ find_package(GLM REQUIRED)
 find_package(assimp REQUIRED)
 find_package(TinyXML REQUIRED)
 
-add_library(GameApplication STATIC src/GameApplication.cpp src/ProgramOptions.cpp src/CommandLineParser.cpp src/XMLOptionsParser.cpp src/utils/Log.cpp
-include/Common.h include/GameApplication.h include/ProgramOptions.h include/ProgramOptions.h include/CommandLineParser.h include/XMLOptionsParser.h include/utils/Log.h include/utils/NonCopyable.h)
+add_library(GameApplication STATIC src/GameApplication.cpp src/ProgramOptions.cpp src/CommandLineParser.cpp src/XMLOptionsParser.cpp src/utils/Log.cpp src/utils/time.cpp
+include/Common.h include/GameApplication.h include/ProgramOptions.h include/ProgramOptions.h include/CommandLineParser.h include/XMLOptionsParser.h include/utils/Log.h
+include/utils/NonCopyable.h include/utils/time.h)
 
 include_directories(GameApplication include/ ${OPENGL_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
 # create the program
