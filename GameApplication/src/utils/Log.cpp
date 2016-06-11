@@ -28,8 +28,8 @@ Log::~Log()
 void Log::create(const string& filename)
 {
   m_FileStream.open(filename.c_str());
-  cout<<"Log Created on "<<getLocalTimeStr();
-  m_FileStream<<"Log Created on "<<getLocalTimeStr();
+  cout<<"Log Created on "<<getLocalTimeStr()<<endl;
+  m_FileStream<<"Log Created on "<<getLocalTimeStr()<<endl;
 }
 
 void Log::write(unsigned int level,const char* format, ...)
@@ -48,7 +48,7 @@ void Log::write(unsigned int level,const char* format, ...)
     va_end (va);
 
     stringstream ss;
-    ss<<getLocalTimeStr()<<" "<<(LogLevel)level<<" "<<buffer<<endl;
+    ss<<(LogLevel)level<<" "<<getLocalTimeStr()<<" "<<buffer<<endl;
     cout<<ss.str();
     m_LogMessages.push(ss.str());
     ss.clear();
