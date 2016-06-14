@@ -1,5 +1,5 @@
 #include "OpenGLRenderer.h"
-
+#include "../../Utils/include/Log.h"
 
 ostream& operator<<(ostream& os, const OpenGLVersion& version)
 {
@@ -45,7 +45,7 @@ string OpenGLRenderer::getCapsAsString()
 
 bool OpenGLRenderer::create(ProgramOptions &options,int windowID)
 {
-
+	LOG(INFO,"%s","Determing OpenGL Version");
 	//lets create the lowest context we can
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
@@ -86,10 +86,10 @@ bool OpenGLRenderer::create(ProgramOptions &options,int windowID)
   m_Context = SDL_GL_CreateContext(m_CachedWindow);
   if (!m_Context)
   {
-    //LOG(ERROR,"Can't Create OpenGL Context %s",SDL_GetError());
+    LOG(ERROR,"Can't Create OpenGL Context %s",SDL_GetError());
   }
 
-  //LOG(INFO,"%s",getCapsAsString().c_str());
+  LOG(INFO,"%s",getCapsAsString().c_str());
 
 
   return true;

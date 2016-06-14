@@ -12,10 +12,11 @@ find_package(assimp REQUIRED)
 find_package(TinyXML REQUIRED)
 
 add_subdirectory(OpenGLRenderer)
-add_library(GameApplication STATIC src/GameApplication.cpp src/ProgramOptions.cpp src/CommandLineParser.cpp src/XMLOptionsParser.cpp src/utils/Log.cpp src/utils/time.cpp
-include/Common.h include/GameApplication.h include/ProgramOptions.h include/ProgramOptions.h include/CommandLineParser.h include/XMLOptionsParser.h include/utils/Log.h
-include/utils/NonCopyable.h include/utils/time.h)
+add_subdirectory(Utils)
 
-include_directories(GameApplication include/ OpenGLRenderer/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
+add_library(GameApplication STATIC src/GameApplication.cpp src/ProgramOptions.cpp src/CommandLineParser.cpp src/XMLOptionsParser.cpp
+include/Common.h include/GameApplication.h include/ProgramOptions.h include/ProgramOptions.h include/CommandLineParser.h include/XMLOptionsParser.h)
+
+include_directories(GameApplication include/ OpenGLRenderer/include utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
 # create the program
-target_link_libraries(GameApplication OpenGLRenderer ${SDL2_LIBRARY} ${GLEW_LIBRARIES} ${SDL2IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${assimp_LIBRARIES} ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(GameApplication OpenGLRenderer Utils ${SDL2_LIBRARY} ${GLEW_LIBRARIES} ${SDL2IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${assimp_LIBRARIES} ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})

@@ -1,5 +1,5 @@
 #include "GameApplication.h"
-#include "utils/Log.h"
+#include "../Utils/include/Log.h"
 #include "graphics/NullRenderer.h"
 #include "../OpenGLRenderer/include/OpenGLRenderer.h"
 
@@ -15,7 +15,6 @@ GameApplication::GameApplication()
 GameApplication::~GameApplication()
 {
   CLOSELOG();
-	destroy();
 }
 
 void GameApplication::createRenderer(const string& rendererName)
@@ -74,6 +73,7 @@ bool GameApplication::init(int args,char * arg[])
 	//Controls the game loop
 	m_bIsRunning = true;
 
+  LOG(INFO,"%s","Initialising SDL");
 	// init everyting - SDL, if it is nonzero we have a problem
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
@@ -127,9 +127,10 @@ void GameApplication::onRenderGUI()
 
 }
 
-void GameApplication::destroy()
+void GameApplication::OnQuit()
 {
 	// clean up, reverse order!!!
+  m_CurrentRenderer->destroy();
 	SDL_DestroyWindow(m_pWindow);
 	IMG_Quit();
 	TTF_Quit();
@@ -148,6 +149,7 @@ void GameApplication::run()
 			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE) {
 				//set our boolean which controls the loop to false
 				m_bIsRunning = false;
+        OnQuit();
 			}
 		}
 		//init Scene

@@ -2,8 +2,7 @@
 #define OPENGLRENDERER_H
 
 #include "../../include/graphics/Renderer.h"
-#include "../../include/utils/NonCopyable.h"
-#include "../../include/utils/Log.h"
+#include "../../Utils/include/NonCopyable.h"
 
 //Structure for holding the version
 struct OpenGLVersion

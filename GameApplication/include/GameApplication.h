@@ -5,7 +5,7 @@
 #include "CommandLineParser.h"
 #include "XMLOptionsParser.h"
 #include "ProgramOptions.h"
-#include "utils/NonCopyable.h"
+#include "../Utils/include/NonCopyable.h"
 #include "graphics/Renderer.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
@@ -40,7 +40,7 @@ public:
 
 	//called when we want to destroy the game, this will delete all major
 	//subsystem in reverse order
-	virtual void destroy();
+	virtual void OnQuit();
 
 	//Basically runs our game
 	void run();
