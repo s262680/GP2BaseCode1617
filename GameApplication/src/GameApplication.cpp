@@ -1,6 +1,7 @@
 #include "GameApplication.h"
 #include "utils/Log.h"
 #include "graphics/NullRenderer.h"
+#include "../OpenGLRenderer/include/OpenGLRenderer.h"
 
 GameApplication::GameApplication()
 {
@@ -22,9 +23,9 @@ void GameApplication::createRenderer(const string& rendererName)
   LOG(INFO,"Creating %s",rendererName.c_str());
   //create a null renderer so at least we can exit gracefully
   m_CurrentRenderer=unique_ptr<IRenderer>(new NullRenderer);
-  
-  auto newRenderer=move(CreateRenderer(m_Options,SDL_GetWindowID(m_pWindow)));
-  if (!newRenderer)
+
+  auto newRenderer=unique_ptr<IRenderer>(new OpenGLRenderer);
+  if (newRenderer->create(m_Options,SDL_GetWindowID(m_pWindow)))
   {
     m_CurrentRenderer=move(newRenderer);
   }
@@ -32,7 +33,7 @@ void GameApplication::createRenderer(const string& rendererName)
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
 {
-  LOG(INFO,"Window Created %s Width -%d Height -%d",windowTitle.c_str(),width,height);
+  LOG(INFO,"Window Created %s Width - %d Height - %d",windowTitle.c_str(),width,height);
 	//Create a window
 	m_pWindow = SDL_CreateWindow(
 		windowTitle.c_str(),             // window title
@@ -116,7 +117,7 @@ void GameApplication::update()
 
 void GameApplication::render()
 {
-  m_CurrentRenderer->begin(vec4(0.0f,0.0f,0.0f,1.0f));
+  m_CurrentRenderer->begin(vec4(1.0f,0.0f,0.0f,1.0f));
 
   m_CurrentRenderer->end();
 }

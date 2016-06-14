@@ -1,18 +1,6 @@
 #include "OpenGLRenderer.h"
 
 
-unique_ptr<IRenderer> CreateRenderer(ProgramOptions &options,int windowID)
-{
-  unique_ptr<IRenderer> renderer=unique_ptr<IRenderer>(new OpenGLRenderer());
-
-  if (renderer->create(options,windowID))
-  {
-    return renderer;
-  }
-
-  return nullptr;
-}
-
 ostream& operator<<(ostream& os, const OpenGLVersion& version)
 {
 	os << "GL_VERSION_" << version.major << "_" << version.minor;
@@ -57,42 +45,13 @@ string OpenGLRenderer::getCapsAsString()
 
 bool OpenGLRenderer::create(ProgramOptions &options,int windowID)
 {
-  glewExperimental = GL_TRUE;
-  GLenum err = glewInit();
-  if (GLEW_OK != err)
-  {
-      //Problem: glewInit failed, something is seriously wrong.
-      LOG(ERROR,"GLEW Error: %s",glewGetErrorString(err));
 
-  }
-
-  OpenGLVersion bestOGLVersion=getBestGLVersion();
-
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, bestOGLVersion.major);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, bestOGLVersion.minor);
-
-  m_CachedWindow=SDL_GetWindowFromID(windowID);
-  m_Context = SDL_GL_CreateContext(m_CachedWindow);
-  if (!m_Context)
-  {
-    LOG(ERROR,"Can't Create OpenGL Context %s",SDL_GetError());
-  }
-
-  LOG(INFO,"%s",getCapsAsString().c_str());
-
-
-  return true;
-}
-
-OpenGLVersion OpenGLRenderer::getBestGLVersion()
-{
-  //lets create the lowest context we can
+	//lets create the lowest context we can
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-  //Create a dummy window, in windows we can create two contexts on a window
+	//Create a dummy window, in windows we can create two contexts on a window
 	//on mac we need to create this hidden dummy window!
 	SDL_Window * dummyWindow = SDL_CreateWindow(
 		"DummyWindow",             // window title
@@ -105,6 +64,39 @@ OpenGLVersion OpenGLRenderer::getBestGLVersion()
 	// Create a dummy OpenGL context associated with the dummy window.
 	SDL_GLContext dummyContext = SDL_GL_CreateContext(dummyWindow);
 
+  glewExperimental = GL_TRUE;
+  GLenum err = glewInit();
+  if (GLEW_OK != err)
+  {
+      //Problem: glewInit failed, something is seriously wrong.
+      //LOG(ERROR,"GLEW Error: %s",glewGetErrorString(err));
+
+  }
+
+	SDL_GL_DeleteContext(dummyContext);
+	SDL_DestroyWindow(dummyWindow);
+
+  OpenGLVersion bestOGLVersion=getBestGLVersion();
+
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, bestOGLVersion.major);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, bestOGLVersion.minor);
+
+  m_CachedWindow=SDL_GetWindowFromID(windowID);
+  m_Context = SDL_GL_CreateContext(m_CachedWindow);
+  if (!m_Context)
+  {
+    //LOG(ERROR,"Can't Create OpenGL Context %s",SDL_GetError());
+  }
+
+  //LOG(INFO,"%s",getCapsAsString().c_str());
+
+
+  return true;
+}
+
+OpenGLVersion OpenGLRenderer::getBestGLVersion()
+{
   int supportedIndex = 0;
   stringstream stringStream;
   for (int i = 0; i < sizeof(SupportedOGLVersions)/sizeof(OpenGLVersion); i++)
@@ -118,16 +110,13 @@ OpenGLVersion OpenGLRenderer::getBestGLVersion()
     }
   }
 
-  SDL_GL_DeleteContext(dummyContext);
-  SDL_DestroyWindow(dummyWindow);
-
   return SupportedOGLVersions[supportedIndex];
 }
 
 void OpenGLRenderer::begin(const vec4& clearColour)
 {
   //Set the clear colour(background)
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(clearColour.r, clearColour.g, clearColour.b, clearColour.a);
 	//Clear the depth buffer
 	glClearDepth(1.0f);
 	//clear the colour and depth buffer

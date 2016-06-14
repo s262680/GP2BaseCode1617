@@ -14,6 +14,4 @@ public:
   virtual void destroy()=0;
 };
 
-unique_ptr<IRenderer> CreateRenderer(ProgramOptions &options,int windowID);
-
 #endif
