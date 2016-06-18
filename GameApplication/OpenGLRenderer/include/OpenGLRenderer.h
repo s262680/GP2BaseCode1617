@@ -37,6 +37,9 @@ public:
   void end();
   void destroy();
 
+	shared_ptr<IVertexBuffer> createVertexBuffer(Vertex *pVertex,int numVerts);
+	shared_ptr<IIndexBuffer> createIndexBuffer(int *pIndices, int numIndices);
+
   OpenGLVersion getBestGLVersion();
 
   string getCapsAsString();

@@ -127,3 +127,13 @@ void OpenGLRenderer::end()
 {
   SDL_GL_SwapWindow(m_CachedWindow);
 }
+
+shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(Vertex *pVertex,int numVerts)
+{
+	return nullptr;
+}
+
+shared_ptr<IIndexBuffer> OpenGLRenderer::createIndexBuffer(int *pIndices, int numIndices)
+{
+	return nullptr;
+}

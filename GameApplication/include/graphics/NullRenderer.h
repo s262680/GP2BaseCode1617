@@ -28,5 +28,15 @@ public:
   {
 
   };
+
+  shared_ptr<IVertexBuffer> createVertexBuffer(Vertex *pVertex,int numVerts)
+  {
+    return nullptr;
+  };
+
+  shared_ptr<IIndexBuffer> createIndexBuffer(int *pIndices, int numIndices)
+  {
+    return nullptr;
+  };
 };
 #endif
