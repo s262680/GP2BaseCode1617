@@ -7,6 +7,7 @@
 #include "ProgramOptions.h"
 #include "../Utils/include/NonCopyable.h"
 #include "graphics/Renderer.h"
+#include "Timer.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -42,6 +43,12 @@ public:
 	//subsystem in reverse order
 	virtual void OnQuit();
 
+	virtual void OnMaximize();
+
+	virtual void OnMinimize();
+
+	virtual void OnRestored();
+
 	//Basically runs our game
 	void run();
 
@@ -53,6 +60,7 @@ protected:
 	//SDL Drawing Context
 	//SDL_GLContext m_glcontext;
 	bool m_bIsRunning;
+	bool m_bIsActive;
 
 	unsigned int m_WindowWidth;
 	unsigned int m_WindowHeight;
@@ -63,5 +71,8 @@ protected:
 	void parseConfig(int args,char * arg[]);
 
 	unique_ptr<IRenderer> m_CurrentRenderer;
+	Timer m_Timer;
+	float m_Lag;
+	float m_UpdateRate;
 };
 #endif

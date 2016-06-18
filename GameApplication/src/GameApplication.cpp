@@ -10,6 +10,10 @@ GameApplication::GameApplication()
 	m_WindowHeight=480;
 	m_WindowCreationFlags=SDL_WINDOW_OPENGL;
   CREATELOG("log.txt");
+  m_bIsActive=false;
+  m_bIsRunning=false;
+  m_Lag=0.0f;
+  m_UpdateRate=1.0f/60.0f;
 }
 
 GameApplication::~GameApplication()
@@ -63,13 +67,15 @@ void GameApplication::parseConfig(int args,char * arg[])
   commandLineParser.parse(m_Options);
   ss<<m_Options;
   LOG(INFO,"Command Line Parsed\n%s",ss.str().c_str());
+  ss.str( std::string());
+  ss.clear();
 }
 
 
 bool GameApplication::init(int args,char * arg[])
 {
   parseConfig(args,arg);
-	//ChangeWorkingDirectory();
+
 	//Controls the game loop
 	m_bIsRunning = true;
 
@@ -97,12 +103,16 @@ bool GameApplication::init(int args,char * arg[])
 	}
   m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
   m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
+
 	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
 
   createRenderer(m_Options.getOption("RendererName"));
 
   //Init Scene
 	initScene();
+
+  m_bIsActive=true;
+  m_Timer.start();
 	return true;
 }
 
@@ -129,12 +139,31 @@ void GameApplication::onRenderGUI()
 
 void GameApplication::OnQuit()
 {
+  //set our boolean which controls the loop to false
+  m_bIsRunning = false;
 	// clean up, reverse order!!!
   m_CurrentRenderer->destroy();
 	SDL_DestroyWindow(m_pWindow);
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
+}
+
+void GameApplication::OnMaximize()
+{
+  LOG(INFO,"%s","Maximize");
+}
+
+void GameApplication::OnMinimize()
+{
+  LOG(INFO,"%s","Minimize");
+  m_bIsActive=false;
+}
+
+void GameApplication::OnRestored()
+{
+  LOG(INFO,"%s","Restored");
+  m_bIsActive=true;
 }
 
 void GameApplication::run()
@@ -146,17 +175,54 @@ void GameApplication::run()
 		//While we still have events in the queue
 		while (SDL_PollEvent(&event)) {
 			//Get event type
-			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE) {
-				//set our boolean which controls the loop to false
-				m_bIsRunning = false;
+			if (event.type == SDL_QUIT) {
+
         OnQuit();
 			}
+      if (event.type==SDL_WINDOWEVENT)
+      {
+        switch (event.window.event)
+        {
+          case SDL_WINDOWEVENT_CLOSE:
+          {
+            OnQuit();
+            break;
+          }
+
+          case SDL_WINDOWEVENT_MINIMIZED:
+          {
+            OnMinimize();
+            break;
+          }
+
+          case SDL_WINDOWEVENT_MAXIMIZED:
+          {
+            OnMaximize();
+            break;
+          }
+          case SDL_WINDOWEVENT_RESTORED:
+          {
+            OnRestored();
+            break;
+          }
+        }
+      }
 		}
-		//init Scene
-		update();
-		//render
-		render();
-		//Call swap so that our GL back buffer is displayed
+    //messages have been handled now do our work for the game
+    if (m_bIsActive && m_bIsRunning){
+      m_Timer.update();
+
+      m_Lag+=m_Timer.getDeltaTime();
+      //process input
+      while (m_Lag>=m_UpdateRate)
+      {
+          LOG(INFO,"Lag - %f %f",m_Lag, m_UpdateRate);
+          update();
+          m_Lag-=m_UpdateRate;
+      }
+		  //render
+		  render();
+    }
 
 	}
 }

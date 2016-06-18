@@ -69,14 +69,14 @@ bool OpenGLRenderer::create(ProgramOptions &options,int windowID)
   if (GLEW_OK != err)
   {
       //Problem: glewInit failed, something is seriously wrong.
-      //LOG(ERROR,"GLEW Error: %s",glewGetErrorString(err));
+      LOG(ERROR,"GLEW Error: %s",glewGetErrorString(err));
 
   }
 
+  OpenGLVersion bestOGLVersion=getBestGLVersion();
+
 	SDL_GL_DeleteContext(dummyContext);
 	SDL_DestroyWindow(dummyWindow);
-
-  OpenGLVersion bestOGLVersion=getBestGLVersion();
 
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, bestOGLVersion.major);
