@@ -1,5 +1,6 @@
 #include "OpenGLRenderer.h"
 #include "../../Utils/include/Log.h"
+#include "GLVertexBuffer.h"
 
 ostream& operator<<(ostream& os, const OpenGLVersion& version)
 {
@@ -130,7 +131,9 @@ void OpenGLRenderer::end()
 
 shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(Vertex *pVertex,int numVerts)
 {
-	return nullptr;
+	shared_ptr<GLVertexBuffer> buffer=make_shared<GLVertexBuffer>();
+	buffer->init(pVertex,numVerts);
+	return buffer;
 }
 
 shared_ptr<IIndexBuffer> OpenGLRenderer::createIndexBuffer(int *pIndices, int numIndices)

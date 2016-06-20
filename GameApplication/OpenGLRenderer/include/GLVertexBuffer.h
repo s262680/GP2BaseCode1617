@@ -7,6 +7,7 @@
 class GLVertexBuffer:public IVertexBuffer
 {
 public:
+  GLVertexBuffer();
   ~GLVertexBuffer();
 
   bool init(Vertex *pVertex,int numVerts);
@@ -19,9 +20,6 @@ public:
   {
     return m_numVerts;
   };
-
-private:
-  GLVertexBuffer();
 private:
   GLuint m_VBO;
   int m_numVerts;

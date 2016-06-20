@@ -216,7 +216,6 @@ void GameApplication::run()
       //process input
       while (m_Lag>=m_UpdateRate)
       {
-          LOG(INFO,"Lag - %f %f",m_Lag, m_UpdateRate);
           update();
           m_Lag-=m_UpdateRate;
       }
