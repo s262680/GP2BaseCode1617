@@ -17,6 +17,6 @@ add_subdirectory(Utils)
 add_library(GameApplication STATIC src/GameApplication.cpp src/ProgramOptions.cpp src/CommandLineParser.cpp src/XMLOptionsParser.cpp src/Timer.cpp
 include/Common.h include/GameApplication.h include/ProgramOptions.h include/ProgramOptions.h include/CommandLineParser.h include/XMLOptionsParser.h include/Timer.h)
 
-include_directories(GameApplication include/ OpenGLRenderer/include utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
+include_directories(GameApplication include/ OpenGLRenderer/include Utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
 # create the program
 target_link_libraries(GameApplication OpenGLRenderer Utils ${SDL2_LIBRARY} ${GLEW_LIBRARIES} ${SDL2IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${assimp_LIBRARIES} ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})
