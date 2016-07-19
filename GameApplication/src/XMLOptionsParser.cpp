@@ -1,5 +1,8 @@
 #include "XMLOptionsParser.h"
-#include "tinyxml.h"
+#include "tinyxml2.h"
+#include "utils/Log.h"
+
+using namespace tinyxml2;
 
 XMLOptionsParser::XMLOptionsParser(const string& filename)
 {
@@ -15,22 +18,31 @@ void XMLOptionsParser::parse(ProgramOptions &options)
 {
   //parse xml file, keep element name and combine with attribute name for key
   //value comes from atrribute value
-  TiXmlDocument doc( m_Filename.c_str());
-  if (!doc.LoadFile()) return;
+  LOG(INFO,"Reading XML Document %s",m_Filename.c_str());
+	XMLDocument doc;
+  if (doc.LoadFile(m_Filename.c_str())!=XML_NO_ERROR)
+  {
+    LOG(ERROR,"Can't parse XML %s",doc.GetErrorStr1());
+    return;
+  }
 
-  TiXmlHandle hDoc(&doc);
-	TiXmlElement* pCurrentElement;
-  TiXmlAttribute* pCurrentAttribute;
+  XMLHandle hDoc(&doc);
+  XMLElement* pCurrentElement;
+  const XMLAttribute* pCurrentAttribute;
   string currentKey;
   string currentValue;
+  XMLHandle hRoot(0);
 
-	TiXmlHandle hRoot(0);
+  pCurrentElement = hDoc.FirstChildElement().ToElement();
+  if (!pCurrentElement)
+  {
+    LOG(ERROR,"%s","Can't grab root of XML");
+    return;
+  }
 
-  pCurrentElement=hDoc.FirstChildElement().Element();
-  if (!pCurrentElement) return;
-
+  LOG(INFO,"Root Element %s",pCurrentElement->Name());
   //We should always ignore root
-  hRoot=TiXmlHandle(pCurrentElement);
+  hRoot=XMLHandle(pCurrentElement);
   //iterate through all elements
   for( pCurrentElement = pCurrentElement->FirstChildElement(); pCurrentElement;
     pCurrentElement = pCurrentElement->NextSiblingElement() )
@@ -42,7 +54,8 @@ void XMLOptionsParser::parse(ProgramOptions &options)
       currentKey.clear();
       currentValue.clear();
       currentKey=string(string(pCurrentElement->Value())+string(pCurrentAttribute->Name()));
-      currentValue=pCurrentAttribute->ValueStr();
+	  currentValue = pCurrentAttribute->Value();
+
 
       options.addOption(currentKey,currentValue);
     }

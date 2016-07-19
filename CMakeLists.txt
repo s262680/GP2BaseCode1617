@@ -5,17 +5,31 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 list(APPEND CMAKE_CXX_FLAGS "-std=c++0x -g ${CMAKE_CXX_FLAGS}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${project_SOURCE_DIR}/cmake")
-set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} pthread)
 
+if (NOT WIN32)
+	set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} pthread)
+endif(NOT WIN32)
+
+set(CMAKE_PREFIX_PATH $ENV{GLEW_ROOT})
+set(CMAKE_LIBRARY_PATH $ENV{GLEW_ROOT}/lib/Release/x64/)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 find_package(SDL2_TTF REQUIRED)
 find_package(GLM REQUIRED)
+<<<<<<< HEAD
 
 add_subdirectory(GameApplication)
 add_executable(GP2BaseCode1617 src/main.cpp src/MyGame.cpp include/MyGame.h)
 include_directories(GP2BaseCode1617 GameApplication/include/ include/  ${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS})
+=======
+find_package(assimp REQUIRED)
+find_package(TinyXML REQUIRED)
+
+add_subdirectory(GameApplication)
+add_executable(GP2BaseCode1617 src/main.cpp src/MyGame.cpp include/MyGame.h)
+include_directories(GP2BaseCode1617 GameApplication/include/ include/ ${OPENGL_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
+>>>>>>> refs/remotes/origin/master
 
 target_link_libraries (GP2BaseCode1617 GameApplication)
 
