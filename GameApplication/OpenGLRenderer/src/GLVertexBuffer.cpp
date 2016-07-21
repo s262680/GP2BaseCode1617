@@ -1,6 +1,5 @@
 #include "GLVertexBuffer.h"
 
-
 GLVertexBuffer::GLVertexBuffer()
 {
   m_VBO=0;

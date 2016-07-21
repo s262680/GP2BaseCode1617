@@ -2,6 +2,7 @@
 #define _GLVERTEXBUFFER_H
 
 #include "../../include/graphics/VertexBuffer.h"
+#include <GL/glew.h>
 #include <SDL_opengl.h>
 
 class GLVertexBuffer:public IVertexBuffer

@@ -10,7 +10,8 @@ find_package(SDL2_TTF REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
 
-add_library(OpenGLRenderer STATIC src/OpenGLRenderer.cpp src/GLVertexBuffer.cpp include/OpenGLRenderer.h include/GLVertexBuffer.h)
+add_library(OpenGLRenderer STATIC src/OpenGLRenderer.cpp src/GLVertexBuffer.cpp src/GLIndexBuffer.cpp src/GLVertexDecleration.cpp
+include/OpenGLRenderer.h include/GLVertexBuffer.h include/GLIndexBuffer.h include/GLVertexDecleration.h)
 
 include_directories(OpenGLRenderer include/ ${OPENGL_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR})
 # create the program
