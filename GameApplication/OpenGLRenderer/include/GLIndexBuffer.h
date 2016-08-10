@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 
-class GLIndexBuffer
+class GLIndexBuffer:public IIndexBuffer
 {
 public:
   GLIndexBuffer();

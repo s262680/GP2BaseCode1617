@@ -1,6 +1,8 @@
 #include "OpenGLRenderer.h"
 #include "../../Utils/include/Log.h"
 #include "GLVertexBuffer.h"
+#include "GLIndexBuffer.h"
+#include "GLVertexDecleration.h"
 
 ostream& operator<<(ostream& os, const OpenGLVersion& version)
 {
@@ -131,6 +133,7 @@ void OpenGLRenderer::end()
 
 shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(Vertex *pVertex,int numVerts)
 {
+	LOG(INFO,"Creating Vertex buffer to hold %i",numVerts);
 	shared_ptr<GLVertexBuffer> buffer=make_shared<GLVertexBuffer>();
 	buffer->init(pVertex,numVerts);
 	return buffer;
@@ -138,5 +141,16 @@ shared_ptr<IVertexBuffer> OpenGLRenderer::createVertexBuffer(Vertex *pVertex,int
 
 shared_ptr<IIndexBuffer> OpenGLRenderer::createIndexBuffer(int *pIndices, int numIndices)
 {
-	return nullptr;
+	LOG(INFO,"Creating Index buffer to hold %i",numIndices);
+	shared_ptr<GLIndexBuffer> buffer=make_shared<GLIndexBuffer>();
+	buffer->init(pIndices,numIndices);
+	return buffer;
+}
+
+shared_ptr<IVertexDecleration> OpenGLRenderer::createVertexDecleration(VertexFormat *pFormat,int count)
+{
+	LOG(INFO,"Creating Vertex Decleration with %i elements",count);
+	shared_ptr<GLVertexDecleration> decl=make_shared<GLVertexDecleration>();
+	decl->setVertexFormat(pFormat,count);
+	return decl;
 }

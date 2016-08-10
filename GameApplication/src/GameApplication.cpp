@@ -125,10 +125,20 @@ void GameApplication::update()
 
 }
 
-void GameApplication::render()
+void GameApplication::beginRender()
 {
   m_CurrentRenderer->begin(vec4(1.0f,0.0f,0.0f,1.0f));
+}
 
+void GameApplication::render()
+{
+
+
+
+}
+
+void GameApplication::endRender()
+{
   m_CurrentRenderer->end();
 }
 
@@ -220,7 +230,9 @@ void GameApplication::run()
           m_Lag-=m_UpdateRate;
       }
 		  //render
+      beginRender();
 		  render();
+      endRender();
     }
 
 	}

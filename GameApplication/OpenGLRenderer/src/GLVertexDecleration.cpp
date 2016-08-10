@@ -10,12 +10,11 @@ GLVertexDecleration::~GLVertexDecleration()
   destroy();
 }
 
-void GLVertexDecleration::setVeretxFormat(VertexFormat *pFormat)
+void GLVertexDecleration::setVertexFormat(VertexFormat *pFormat, int count)
 {
   glGenVertexArrays(1,&m_VAO);
   glBindVertexArray(m_VAO);
-  int size=(sizeof(pFormat)/sizeof(VertexFormat));
-  for (int i=0;i<size;i++)
+  for (int i=0;i<count;i++)
   {
     //Setup GL Pointer
     glEnableVertexAttribArray(i);

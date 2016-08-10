@@ -38,5 +38,10 @@ public:
   {
     return nullptr;
   };
+
+  shared_ptr<IVertexDecleration> createVertexDecleration(VertexFormat *pFormat, int count)
+  {
+    return nullptr;
+  };
 };
 #endif

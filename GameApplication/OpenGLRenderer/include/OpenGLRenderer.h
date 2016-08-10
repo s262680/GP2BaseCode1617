@@ -39,6 +39,7 @@ public:
 
 	shared_ptr<IVertexBuffer> createVertexBuffer(Vertex *pVertex,int numVerts);
 	shared_ptr<IIndexBuffer> createIndexBuffer(int *pIndices, int numIndices);
+	shared_ptr<IVertexDecleration> createVertexDecleration(VertexFormat *pFormat,int count);
 
   OpenGLVersion getBestGLVersion();
 

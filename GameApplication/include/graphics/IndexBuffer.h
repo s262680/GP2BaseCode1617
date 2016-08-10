@@ -10,7 +10,7 @@ public:
 
   virtual void destroy()=0;
 
-  virtual void bind()=0;
+  //virtual void bind()=0;
 
   virtual int getNumberOfIndices()=0;
 };

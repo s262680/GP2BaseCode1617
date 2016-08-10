@@ -6,11 +6,12 @@
 class IVertexDecleration
 {
 public:
-    IVertexDecleration();
     virtual ~IVertexDecleration(){};
 
-    virtual void setVeretxFormat(VertexFormat *pFormat)=0;
+    virtual void setVertexFormat(VertexFormat *pFormat, int count)=0;
 
+    //probably should be bound by the renderer not by itself!!
+    //refactor this shit!
     virtual void bind()=0;
 };
 

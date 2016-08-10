@@ -32,8 +32,11 @@ public:
 	//turn and everything in the game should be up to date
 	virtual void update();
 
+	void beginRender();
 	//render the current frame of the game
 	virtual void render();
+
+	void endRender();
 
 	//called when we have to render a GUI, we are using IMGUI for ease of use
 	//we should really create our own retained GUI system

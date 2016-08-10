@@ -5,6 +5,7 @@
 #include "../ProgramOptions.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexDecleration.h"
 
 class IRenderer
 {
@@ -17,6 +18,8 @@ public:
 
   virtual shared_ptr<IVertexBuffer> createVertexBuffer(Vertex *pVertex,int numVerts)=0;
   virtual shared_ptr<IIndexBuffer> createIndexBuffer(int *pIndices, int numIndices)=0;
+  virtual shared_ptr<IVertexDecleration> createVertexDecleration(VertexFormat *pFormat, int count)=0;
+
 };
 
 #endif

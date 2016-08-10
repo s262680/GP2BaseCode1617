@@ -11,7 +11,7 @@ public:
     GLVertexDecleration();
     ~GLVertexDecleration();
 
-    void setVeretxFormat(VertexFormat *pFormat);
+    void setVertexFormat(VertexFormat *pFormat, int count);
 
     void bind();
 
