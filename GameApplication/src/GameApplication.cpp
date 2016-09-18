@@ -1,36 +1,19 @@
 #include "GameApplication.h"
-#include "graphics/NullRenderer.h"
-#include "OpenGLRenderer.h"
 
 GameApplication::GameApplication()
 {
  	m_pWindow=nullptr;
 	m_WindowWidth=640;
 	m_WindowHeight=480;
-	m_WindowCreationFlags=SDL_WINDOW_OPENGL;
-  CREATELOG("log.txt");
-  m_bIsActive=false;
-  m_bIsRunning=false;
-  m_Lag=0.0f;
-  m_UpdateRate=1.0f/60.0f;
+	m_WindowCreationFlags=0;
+	CREATELOG("log.txt");
+	m_bIsActive=false;
+	m_bIsRunning=false;
 }
 
 GameApplication::~GameApplication()
 {
   CLOSELOG();
-}
-
-void GameApplication::createRenderer(const string& rendererName)
-{
-  LOG(INFO,"Creating %s",rendererName.c_str());
-  //create a null renderer so at least we can exit gracefully
-  m_CurrentRenderer=unique_ptr<IRenderer>(new NullRenderer);
-
-  auto newRenderer=unique_ptr<IRenderer>(new OpenGLRenderer);
-  if (newRenderer->create(m_Options,SDL_GetWindowID(m_pWindow)))
-  {
-    m_CurrentRenderer=move(newRenderer);
-  }
 }
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
@@ -87,31 +70,16 @@ bool GameApplication::init(int args,char * arg[])
 		return false;
 	}
 
-	//Initialise SDL Image
-	int	imageInitFlags = IMG_INIT_JPG | IMG_INIT_PNG;
-	int	returnInitFlags = IMG_Init(imageInitFlags);
-	if (((returnInitFlags)&	(imageInitFlags)) != imageInitFlags)	{
-    LOG(ERROR,"SDL Image Can't be Initialised %s",IMG_GetError());
-		return false;
-	}
-
-	//Initialise SDL TTF
-	if (TTF_Init() == -1)	{
-    LOG(ERROR,"SDL TTF Can't be Initialised %s",TTF_GetError());
-		return false;
-	}
-  m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
-  m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
+	m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
+	m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
 
 	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
 
-  createRenderer(m_Options.getOption("RendererName"));
 
-  //Init Scene
+	//Init Scene
 	initScene();
 
-  m_bIsActive=true;
-  m_Timer.start();
+	m_bIsActive=true;
 	return true;
 }
 
@@ -119,42 +87,12 @@ void GameApplication::initScene()
 {
 }
 
-void GameApplication::update()
-{
-
-}
-
-void GameApplication::beginRender()
-{
-  m_CurrentRenderer->begin(vec4(1.0f,0.0f,0.0f,1.0f));
-}
-
-void GameApplication::render()
-{
-
-
-
-}
-
-void GameApplication::endRender()
-{
-  m_CurrentRenderer->end();
-}
-
-void GameApplication::onRenderGUI()
-{
-
-}
 
 void GameApplication::OnQuit()
 {
-  //set our boolean which controls the loop to false
-  m_bIsRunning = false;
-	// clean up, reverse order!!!
-  m_CurrentRenderer->destroy();
+	//set our boolean which controls the loop to false
+	m_bIsRunning = false;
 	SDL_DestroyWindow(m_pWindow);
-	IMG_Quit();
-	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -186,53 +124,39 @@ void GameApplication::run()
 			//Get event type
 			if (event.type == SDL_QUIT) {
 
-        OnQuit();
+				OnQuit();
 			}
-      if (event.type==SDL_WINDOWEVENT)
-      {
-        switch (event.window.event)
-        {
-          case SDL_WINDOWEVENT_CLOSE:
-          {
-            OnQuit();
-            break;
-          }
+			if (event.type == SDL_WINDOWEVENT)
+			{
+				switch (event.window.event)
+				{
+				case SDL_WINDOWEVENT_CLOSE:
+				{
+					OnQuit();
+					break;
+				}
 
-          case SDL_WINDOWEVENT_MINIMIZED:
-          {
-            OnMinimize();
-            break;
-          }
+				case SDL_WINDOWEVENT_MINIMIZED:
+				{
+					OnMinimize();
+					break;
+				}
 
-          case SDL_WINDOWEVENT_MAXIMIZED:
-          {
-            OnMaximize();
-            break;
-          }
-          case SDL_WINDOWEVENT_RESTORED:
-          {
-            OnRestored();
-            break;
-          }
-        }
-      }
+				case SDL_WINDOWEVENT_MAXIMIZED:
+				{
+					OnMaximize();
+					break;
+				}
+				case SDL_WINDOWEVENT_RESTORED:
+				{
+					OnRestored();
+					break;
+				}
+				}
+			}
 		}
-    //messages have been handled now do our work for the game
-    if (m_bIsActive && m_bIsRunning){
-      m_Timer.update();
-
-      m_Lag+=m_Timer.getDeltaTime();
-      //process input
-      while (m_Lag>=m_UpdateRate)
-      {
-          update();
-          m_Lag-=m_UpdateRate;
-      }
-		  //render
-      beginRender();
-		  render();
-      endRender();
-    }
-
+		//messages have been handled now do our work for the game
+		if (m_bIsActive && m_bIsRunning) {
+		}
 	}
 }

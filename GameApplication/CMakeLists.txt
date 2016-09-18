@@ -11,11 +11,10 @@ find_package(GLM REQUIRED)
 find_package(assimp REQUIRED)
 find_package(TinyXML REQUIRED)
 
-add_subdirectory(OpenGLRenderer)
 add_subdirectory(Utils)
 
 add_library(GameApplication STATIC src/GameApplication.cpp include/Common.h include/GameApplication.h include/graphics/VertexFormat.h include/graphics/VertexDecleration.h include/graphics/ShaderProgram.h)
 
-include_directories(GameApplication include/ OpenGLRenderer/include Utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
+include_directories(GameApplication include/ Utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
 # create the program
-target_link_libraries(GameApplication OpenGLRenderer Utils ${SDL2_LIBRARY} ${GLEW_LIBRARIES} ${SDL2IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${assimp_LIBRARIES} ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(GameApplication Utils ${SDL2_LIBRARY} ${GLEW_LIBRARIES} ${SDL2IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${assimp_LIBRARIES} ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})
