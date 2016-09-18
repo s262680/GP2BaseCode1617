@@ -2,7 +2,7 @@
 #define _TIMER_h
 
 #include <vector>
-#include "../Utils/include/NonCopyable.h"
+#include "NonCopyable.h"
 
 using namespace std;
 

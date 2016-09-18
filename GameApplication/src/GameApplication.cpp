@@ -1,7 +1,6 @@
 #include "GameApplication.h"
-#include "../Utils/include/Log.h"
 #include "graphics/NullRenderer.h"
-#include "../OpenGLRenderer/include/OpenGLRenderer.h"
+#include "OpenGLRenderer.h"
 
 GameApplication::GameApplication()
 {

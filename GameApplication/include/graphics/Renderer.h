@@ -2,7 +2,6 @@
 #define _RENDERER_H
 
 #include "../Common.h"
-#include "../ProgramOptions.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexDecleration.h"
