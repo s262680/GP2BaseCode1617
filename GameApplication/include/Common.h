@@ -19,20 +19,6 @@
 //Name space std, so we don't need to do std::vector
 using namespace std;
 
-//Gloew
-#include <GL/glew.h>
-//SDL
-#include <SDL.h>
-
-#define GLM_FORCE_RADIANS
-//maths headers
-#include <glm/glm.hpp>
-using namespace glm;
-
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
-
 #include "../Utils/include/Utils.h"
 
 #endif

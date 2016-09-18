@@ -2,7 +2,6 @@
 #define _GAMEAPPLICATION_H
 
 #include "Common.h"
-#include "graphics/Renderer.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -38,9 +37,6 @@ public:
 
 	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
 protected:
-	//SDL Windows
-	SDL_Window * m_pWindow;
-
 	bool m_bIsRunning;
 	bool m_bIsActive;
 
