@@ -9,6 +9,6 @@ add_subdirectory(Utils)
 
 add_library(GameApplication STATIC src/GameApplication.cpp include/Common.h include/GameApplication.h)
 
-include_directories(GameApplication include/ Utils/include ${SDL2_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} ${TINYXML_INCLUDE_DIR})
+include_directories(GameApplication include/ Utils/include ${TINYXML_INCLUDE_DIR})
 # create the program
 target_link_libraries(GameApplication Utils ${TINYXML_LIBRARIES} ${CMAKE_DL_LIBS})

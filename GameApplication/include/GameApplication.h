@@ -17,33 +17,9 @@ public:
 	//This is where all major subsystems are created
 	virtual bool init(int args,char * arg[]);
 
-	//This is where a scene is initialised, this assumes we only have one scene
-	//we should probably create some sort of SceneManager class to manage more than one
-	//scene
-	virtual void initScene();
-
-	//called when we want to destroy the game, this will delete all major
-	//subsystem in reverse order
-	virtual void OnQuit();
-
-	virtual void OnMaximize();
-
-	virtual void OnMinimize();
-
-	virtual void OnRestored();
-
 	//Basically runs our game
 	void run();
-
-	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
 protected:
-	bool m_bIsRunning;
-	bool m_bIsActive;
-
-	unsigned int m_WindowWidth;
-	unsigned int m_WindowHeight;
-	unsigned int m_WindowCreationFlags;
-
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
