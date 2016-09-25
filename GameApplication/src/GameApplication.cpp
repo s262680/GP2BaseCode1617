@@ -43,6 +43,7 @@ void GameApplication::parseConfig(int args,char * arg[])
   LOG(INFO,"Settings Parsed\n%s",ss.str().c_str());
   ss.str( std::string());
   ss.clear();
+  
 	//parse command line arguments into keyvalue pairs, this should
 	//overide options in config files
   CommandLineParser commandLineParser=CommandLineParser(args,arg);
