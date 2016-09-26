@@ -6,6 +6,7 @@ GameApplication::GameApplication()
 	m_WindowWidth=640;
 	m_WindowHeight=480;
 	m_WindowCreationFlags=0;
+	m_WindowTitle="Game";
 	CREATELOG("log.txt");
 	m_bIsActive=false;
 	m_bIsRunning=false;
@@ -28,9 +29,6 @@ void GameApplication::createWindow(const string& windowTitle,const unsigned int 
 		height,                        // height, in pixels
 		windowFlags           // flags
 		);
-
-		m_WindowWidth=width;
-		m_WindowHeight=height;
 }
 
 void GameApplication::parseConfig(int args,char * arg[])
@@ -59,8 +57,7 @@ bool GameApplication::init(int args,char * arg[])
 {
   parseConfig(args,arg);
 
-	//Controls the game loop
-	m_bIsRunning = true;
+
 
   LOG(INFO,"%s","Initialising SDL");
 	// init everyting - SDL, if it is nonzero we have a problem
@@ -73,19 +70,14 @@ bool GameApplication::init(int args,char * arg[])
 
 	m_WindowWidth=m_Options.getOptionAsInt("WindowWidth");
 	m_WindowHeight=m_Options.getOptionAsInt("WindowHeight");
+	m_WindowTitle = m_Options.getOption("WindowTitle");
 
-	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
-
-
-	//Init Scene
-	initScene();
-
+	createWindow(m_WindowTitle,m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
+	
 	m_bIsActive=true;
+	//Controls the game loop
+	m_bIsRunning = true;
 	return true;
-}
-
-void GameApplication::initScene()
-{
 }
 
 
