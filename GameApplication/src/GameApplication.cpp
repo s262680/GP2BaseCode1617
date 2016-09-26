@@ -3,6 +3,10 @@
 GameApplication::GameApplication()
 {
 	CREATELOG("log.txt");
+	m_WindowWidth = 640;
+	m_WindowHeight = 480;
+	m_WindowCreationFlags = 0;
+	m_WindowTitle = "Game";
 }
 
 GameApplication::~GameApplication()
@@ -33,7 +37,12 @@ void GameApplication::parseConfig(int args,char * arg[])
 
 bool GameApplication::init(int args,char * arg[])
 {
-  parseConfig(args,arg);
+	parseConfig(args,arg);
+
+	m_WindowWidth = m_Options.getOptionAsInt("WindowWidth");
+	m_WindowHeight = m_Options.getOptionAsInt("WindowHeight");
+	m_WindowTitle = m_Options.getOption("WindowTitle");
+
 	return true;
 }
 

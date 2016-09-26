@@ -22,6 +22,11 @@ public:
 protected:
 	ProgramOptions m_Options;
 
+	unsigned int m_WindowWidth;
+	unsigned int m_WindowHeight;
+	unsigned int m_WindowCreationFlags;
+	string m_WindowTitle;
+
 	void parseConfig(int args,char * arg[]);
 };
 #endif
