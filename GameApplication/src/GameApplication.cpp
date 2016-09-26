@@ -13,7 +13,7 @@ GameApplication::GameApplication()
 
 GameApplication::~GameApplication()
 {
-  CLOSELOG();
+  
 }
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
@@ -77,17 +77,9 @@ bool GameApplication::init(int args,char * arg[])
 	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
 
 
-	//Init Scene
-	initScene();
-
 	m_bIsActive=true;
 	return true;
 }
-
-void GameApplication::initScene()
-{
-}
-
 
 void GameApplication::OnQuit()
 {
@@ -95,6 +87,7 @@ void GameApplication::OnQuit()
 	m_bIsRunning = false;
 	SDL_DestroyWindow(m_pWindow);
 	SDL_Quit();
+	CLOSELOG();
 }
 
 void GameApplication::OnMaximize()
@@ -126,6 +119,20 @@ void GameApplication::run()
 			if (event.type == SDL_QUIT) {
 
 				OnQuit();
+			}
+			if (event.type == SDL_KEYDOWN)
+			{
+				if (event.key.keysym.sym == SDLK_ESCAPE)
+				{
+					OnQuit();
+				}
+				if (event.key.keysym.sym == SDLK_f)
+				{
+					if (SDL_SetWindowFullscreen(m_pWindow, SDL_WINDOW_FULLSCREEN) == -1)
+					{
+						LOG(ERROR, "Can't Maximize %s", SDL_GetError());
+					}
+				}
 			}
 			if (event.type == SDL_WINDOWEVENT)
 			{

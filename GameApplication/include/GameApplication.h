@@ -17,11 +17,6 @@ public:
 	//This is where all major subsystems are created
 	virtual bool init(int args,char * arg[]);
 
-	//This is where a scene is initialised, this assumes we only have one scene
-	//we should probably create some sort of SceneManager class to manage more than one
-	//scene
-	virtual void initScene();
-
 	//called when we want to destroy the game, this will delete all major
 	//subsystem in reverse order
 	virtual void OnQuit();
