@@ -20,6 +20,9 @@ public:
 	//Basically runs our game
 	void run();
 protected:
+
+	SDL_Window*m_pWindow;
+
 	ProgramOptions m_Options;
 
 	unsigned int m_WindowWidth;

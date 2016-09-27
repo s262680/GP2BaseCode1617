@@ -15,6 +15,7 @@
 #include <chrono>
 #include <ctime>
 #include <cstdarg>
+#include <SDL.h>
 
 //Name space std, so we don't need to do std::vector
 using namespace std;

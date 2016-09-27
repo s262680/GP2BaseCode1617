@@ -39,6 +39,13 @@ bool GameApplication::init(int args,char * arg[])
 {
 	parseConfig(args,arg);
 
+	// init everything - SDL, if it is nonzero we have a problem
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
+		LOG(ERROR, "SDL can't be initialised %s", SDL_GetError());
+		return false;
+	}
+
 	m_WindowWidth = m_Options.getOptionAsInt("WindowWidth");
 	m_WindowHeight = m_Options.getOptionAsInt("WindowHeight");
 	m_WindowTitle = m_Options.getOption("WindowTitle");
