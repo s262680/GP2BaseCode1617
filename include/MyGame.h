@@ -8,5 +8,7 @@ class MyGame:public GameApplication
 public:
 	MyGame();
 	~MyGame();
+
+	void render();
 };
 #endif

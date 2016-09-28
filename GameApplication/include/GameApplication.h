@@ -27,13 +27,23 @@ public:
 
 	virtual void OnRestored();
 
+	virtual void update();
+
+	virtual void render();
+
+	void OnBeginRender();
+	void OnEndRender();
+	void setViewport( int width, int height );
+
 	//Basically runs our game
 	void run();
 
 	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
+	void initGraphics();
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;
+	SDL_GLContext m_GLcontext;
 
 	bool m_bIsRunning;
 	bool m_bIsActive;
