@@ -10,5 +10,9 @@ public:
 	~MyGame();
 
 	void render();
+	void initScene();
+	void destroyScene();
+private:
+	GLuint m_VBO;
 };
 #endif

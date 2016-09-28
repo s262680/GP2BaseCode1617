@@ -31,6 +31,9 @@ public:
 
 	virtual void render();
 
+	virtual void initScene();
+	virtual void destroyScene();
+
 	void OnBeginRender();
 	void OnEndRender();
 	void setViewport( int width, int height );
