@@ -7,11 +7,28 @@ GameApplication::GameApplication()
 	m_WindowHeight = 480;
 	m_WindowCreationFlags = 0;
 	m_WindowTitle = "Game";
+	m_pWindow = nullptr;
 }
 
 GameApplication::~GameApplication()
 {
   CLOSELOG();
+}
+
+void GameApplication::createWindow(const string& windowTitle,
+	const unsigned int width, const unsigned int height,
+	const unsigned int windowFlags)
+{
+	LOG(INFO, "Window Created %s Width-%d Height - %d", windowTitle.c_str(), width, height);
+
+	//Create a window
+	m_pWindow = SDL_CreateWindow(windowTitle.c_str(), //window title
+		0,									//x position
+		0,									//y position
+		width,								//width, in pixels
+		height,								//height, in pixels
+		windowFlags							//flags
+	);
 }
 
 void GameApplication::parseConfig(int args,char * arg[])
