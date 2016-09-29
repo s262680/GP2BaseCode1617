@@ -25,6 +25,8 @@ public:
 		const unsigned int width, const unsigned int height,
 		const unsigned int windowFlags = 0);
 
+	void OnQuit();
+
 protected:
 
 	//point created windows in memory
@@ -36,6 +38,8 @@ protected:
 	unsigned int m_WindowHeight;
 	unsigned int m_WindowCreationFlags;
 	string m_WindowTitle;
+
+	bool m_bIsRunning;
 
 	void parseConfig(int args,char * arg[]);
 };
