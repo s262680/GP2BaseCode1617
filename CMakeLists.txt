@@ -13,12 +13,10 @@ endif(NOT WIN32)
 set(CMAKE_PREFIX_PATH $ENV{GLEW_ROOT})
 set(CMAKE_LIBRARY_PATH $ENV{GLEW_ROOT}/lib/Release/x64/)
 
-find_package(SDL2 REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(OPENGL REQUIRED)
 find_package(GLM REQUIRED)
-find_package(TinyXML REQUIRED)
 find_package(GLEW REQUIRED)
 
 add_subdirectory(GameApplication)

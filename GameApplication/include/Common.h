@@ -20,8 +20,6 @@
 using namespace std;
 
 #include <GL/glew.h>
-
-//SDL
 #include <SDL.h>
 #include <SDL_opengl.h>
 
