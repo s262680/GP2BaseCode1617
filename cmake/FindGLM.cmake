@@ -28,6 +28,8 @@
 #=============================================================================
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
+message("<FindGLM.cmake>")
+message("$ENV{GLM_ROOT_DIR}")
 
 # default search dirs
 SET(_glm_HEADER_SEARCH_DIRS

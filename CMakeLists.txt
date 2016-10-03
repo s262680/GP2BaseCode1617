@@ -10,6 +10,9 @@ if (NOT WIN32)
 	set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} pthread)
 endif(NOT WIN32)
 
+message("GP2BaseCode1617")
+message("$ENV{GLEW_ROOT}")
+
 set(CMAKE_PREFIX_PATH $ENV{GLEW_ROOT})
 set(CMAKE_LIBRARY_PATH $ENV{GLEW_ROOT}/lib/Release/x64/)
 
