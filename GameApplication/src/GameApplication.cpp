@@ -5,7 +5,7 @@ GameApplication::GameApplication()
  	m_pWindow=nullptr;
 	m_WindowWidth=640;
 	m_WindowHeight=480;
-	m_WindowCreationFlags=0;
+	m_WindowCreationFlags=SDL_WINDOW_OPENGL;
 	CREATELOG("log.txt");
 	m_bIsActive=false;
 	m_bIsRunning=false;
@@ -77,6 +77,7 @@ bool GameApplication::init(int args,char * arg[])
 
 	createWindow(m_Options.getOption("WindowTitle"),m_WindowWidth,m_WindowHeight,m_WindowCreationFlags);
 
+	initGraphics();
 
 	m_bIsActive=true;
 	return true;
@@ -86,6 +87,9 @@ void GameApplication::OnQuit()
 {
 	//set our boolean which controls the loop to false
 	m_bIsRunning = false;
+
+	//clean up, reverse order!!!
+	SDL_GL_DeleteContext(m_GLcontext);
 	SDL_DestroyWindow(m_pWindow);
 	SDL_Quit();
 	CLOSELOG();
@@ -111,6 +115,10 @@ void GameApplication::OnRestored()
 
 void GameApplication::OnBeginRender()
 {
+	//set the clear colour(background)
+	glClearColor(255.0f, 0.0f, 0.0f, 0.0f);
+	//clear the colour and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GameApplication::render()
@@ -119,6 +127,7 @@ void GameApplication::render()
 
 void GameApplication::OnEndRender()
 {
+	SDL_GL_SwapWindow(m_pWindow);
 }
 
 void GameApplication::update()
@@ -147,6 +156,22 @@ void GameApplication::initGraphics()
 
 	//OpenGL States
 	//Smooth shading
+	glShadeModel(GL_SMOOTH);
+
+	//Clear the background to black
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	//clear the depth buffer to 1.0
+	glClearDepth(1.0f);
+
+	//enable depth testing
+	glEnable(GL_DEPTH_TEST);
+
+	//the depth test to use
+	glDepthFunc(GL_LEQUAL);
+
+	//Turn on best perspective correction
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 void GameApplication::run()
