@@ -33,6 +33,7 @@ void GameApplication::createWindow(const string& windowTitle,const unsigned int 
 		m_WindowHeight=height;
 }
 
+
 void GameApplication::parseConfig(int args,char * arg[])
 {
   stringstream ss;
@@ -107,6 +108,47 @@ void GameApplication::OnRestored()
   m_bIsActive=true;
 }
 
+
+void GameApplication::OnBeginRender()
+{
+}
+
+void GameApplication::render()
+{
+}
+
+void GameApplication::OnEndRender()
+{
+}
+
+void GameApplication::update()
+{
+}
+
+void GameApplication::initGraphics()
+{
+	//OpenGL Context
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+		SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	m_GLcontext = SDL_GL_CreateContext(m_pWindow);
+
+	//GLEW
+	glewExperimental = GL_TRUE;
+
+	GLenum err = glewInit();
+
+	if (GLEW_OK != err)
+	{
+		LOG(ERROR, "Error: %s", glewGetErrorString(err));
+	}
+
+	//OpenGL States
+	//Smooth shading
+}
+
 void GameApplication::run()
 {
 	SDL_Event event;
@@ -166,5 +208,11 @@ void GameApplication::run()
 		//messages have been handled now do our work for the game
 		if (m_bIsActive && m_bIsRunning) {
 		}
+
+		update();
+
+		OnBeginRender();
+		render();
+		OnEndRender();
 	}
 }
