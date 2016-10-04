@@ -56,9 +56,9 @@ void GameApplication::parseConfig(int args,char * arg[])
 
 void GameApplication::initGraphics()
 {
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     m_GLcontext = SDL_GL_CreateContext(m_pWindow);
     glewExperimental = GL_TRUE;
@@ -106,20 +106,6 @@ void GameApplication::setViewport( int width, int height )
 
     //Setup viewport
     glViewport( 0, 0, ( GLsizei )width, ( GLsizei )height );
-
-    //Change to projection matrix mode
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity( );
-
-    //Calculate perspective matrix
-    mat4 projectionMatrix=perspective( radians(45.0f), ratio, 0.1f, 100.0f );
-    glLoadMatrixf(&projectionMatrix[0][0]);
-
-    //Switch to ModelView
-    glMatrixMode( GL_MODELVIEW );
-
-    //Reset using the Identity Matrix
-    glLoadIdentity( );
 }
 
 bool GameApplication::init(int args,char * arg[])
