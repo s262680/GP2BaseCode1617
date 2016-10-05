@@ -23,4 +23,9 @@ GLuint loadShaderFromMemory(const char * pMem, SHADER_TYPE shaderType);
 bool checkForLinkErrors(GLuint program);
 bool checkForCompilerErrors(GLuint shaderProgram);
 
+const char * GLTypeToString(GLenum type);
+void logShaderInfo(GLuint program);
+void logAttributeInfo(GLuint program);
+void logUniformInfo(GLuint program);
+
 #endif
