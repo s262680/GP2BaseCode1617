@@ -44,6 +44,12 @@ public:
 
 	void setViewport(int width, int height);
 
+	float triAX = -0.5f;
+	float triAY = -0.5f;
+
+	float quadAX = 0.5f;
+	float quadAY = 0.5f;
+
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;

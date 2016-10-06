@@ -9,6 +9,7 @@ GameApplication::GameApplication()
 	CREATELOG("log.txt");
 	m_bIsActive=false;
 	m_bIsRunning=false;
+	
 }
 
 GameApplication::~GameApplication()
@@ -134,10 +135,24 @@ void GameApplication::render()
 	glBegin(GL_TRIANGLES);
 
 		glColor3f(1.0f, 0.0f, 0.0f); //colour of the vertices
-		glVertex3f(0.0f, 1.0f, 0.0f);//top vertex
-		glVertex3f(-1.0f, -1.0f, 0.0f);//bottom left vertex
-		glVertex3f(1.0f, -1.0f, 0.0f);//bottom right vertex
+		glVertex3f(triAX+0.0f, triAY+1.0f, 0.0f);//top vertex
+		glColor3f(0.0f, 1.0f, 0.0f); //colour of the vertices
+		glVertex3f(triAX+0.0f, triAY+(-1.0f), 0.0f);//bottom left vertex
+		glColor3f(0.0f, 0.0f, 1.0f); //colour of the vertices
+		glVertex3f(triAX+2.0f, triAY+(-1.0f), 0.0f);//bottom right vertex
+		
+	glEnd();
 
+	glBegin(GL_QUADS);
+	
+	glColor3f(0.0f, 0.0f, 1.0f); //colour of the vertices
+	glVertex3f(quadAX + 0.0f, quadAY + (1.0f), 0.0f);//top vertex
+	glColor3f(0.0f, 0.0f, 1.0f); //colour of the vertices
+	glVertex3f(quadAX + 0.0f, quadAY + (-1.0f), 0.0f);//bottom left vertex
+	glColor3f(0.0f, 0.0f, 1.0f); //colour of the vertices
+	glVertex3f(quadAX + 2.0f, quadAY + (-1.0f), 0.0f);//bottom right vertex
+	glColor3f(0.0f, 0.0f, 1.0f); //colour of the vertices
+	glVertex3f(quadAX + 2.0f, quadAY + (1.0f), 0.0f);//bottom right vertex
 	glEnd();
 }
 
@@ -218,6 +233,7 @@ void GameApplication::setViewport(int width, int height)
 
 	//calculate perspective matrix, using gLM
 	mat4 projectionMatrix = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
+	glLoadMatrixf(&projectionMatrix[0][0]);
 
 	//switch to ModelView
 	glMatrixMode(GL_MODELVIEW);
@@ -251,6 +267,42 @@ void GameApplication::run()
 					{
 						LOG(ERROR, "Can't Maximize %s", SDL_GetError());
 					}
+				}
+
+				//inputs to move triangle
+				if (event.key.keysym.sym == SDLK_a)
+				{
+					triAX -= 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_d)
+				{
+					triAX += 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_w)
+				{
+					triAY += 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_s)
+				{
+					triAY -= 0.1f;
+				}
+
+				//inputs to move quad
+				if (event.key.keysym.sym == SDLK_LEFT)
+				{
+					quadAX -= 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_RIGHT)
+				{
+					quadAX += 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_UP)
+				{
+					quadAY += 0.1f;
+				}
+				if (event.key.keysym.sym == SDLK_DOWN)
+				{
+					quadAY -= 0.1f;
 				}
 			}
 			if (event.type == SDL_WINDOWEVENT)
