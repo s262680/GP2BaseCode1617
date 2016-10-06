@@ -116,13 +116,29 @@ void GameApplication::OnRestored()
 void GameApplication::OnBeginRender()
 {
 	//set the clear colour(background)
-	glClearColor(255.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	//clear the colour and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GameApplication::render()
 {
+	//switch to modelView
+	glMatrixMode(GL_MODELVIEW);
+	//reset using the identity matrix
+	glLoadIdentity();
+	//translate to -0.5f on z axis
+	glTranslatef(0.0f, 0.0f, -5.0f);
+
+	//begin drawing triangles
+	glBegin(GL_TRIANGLES);
+
+		glColor3f(1.0f, 0.0f, 0.0f); //colour of the vertices
+		glVertex3f(0.0f, 1.0f, 0.0f);//top vertex
+		glVertex3f(-1.0f, -1.0f, 0.0f);//bottom left vertex
+		glVertex3f(1.0f, -1.0f, 0.0f);//bottom right vertex
+
+	glEnd();
 }
 
 void GameApplication::OnEndRender()
