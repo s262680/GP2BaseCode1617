@@ -42,6 +42,8 @@ public:
 
 	void initGraphics();
 
+	void setViewport(int width, int height);
+
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;

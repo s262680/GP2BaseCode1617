@@ -172,6 +172,42 @@ void GameApplication::initGraphics()
 
 	//Turn on best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+	//set our viewport
+	setViewport((int)m_WindowWidth, (int)m_WindowHeight);
+}
+
+
+//Function to set/reset viewport
+void GameApplication::setViewport(int width, int height)
+{
+	//screen ration
+	GLfloat ratio;
+
+	//make sure height is always above 1
+	if(height == 0)
+	{
+		height = 1;
+	}
+
+	//calculate screen ration
+	ratio = (GLfloat)width / (GLfloat)height;
+
+	//setup viewport (in clipping part)
+	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+
+	//change to projection matrix mode
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	//calculate perspective matrix, using gLM
+	mat4 projectionMatrix = perspective(radians(45.0f), ratio, 0.1f, 100.0f);
+
+	//switch to ModelView
+	glMatrixMode(GL_MODELVIEW);
+
+	//Reset using the Identity Matrix
+	glLoadIdentity();
 }
 
 void GameApplication::run()
