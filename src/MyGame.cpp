@@ -3,10 +3,12 @@
 struct Vertex{
 	float x,y,z;
 	float r,g,b,a;
+	float tu,tv;
  };
 
  const std::string ASSET_PATH = "assets";
  const std::string SHADER_PATH = "/shaders";
+ const std::string TEXTURE_PATH = "/textures";
 
 MyGame::MyGame()
 {
@@ -21,14 +23,18 @@ MyGame::~MyGame()
 void MyGame::initScene()
 {
 	Vertex verts[]={
-  	{-0.5f, -0.5f, 0.0f,1.0f,0.0f,0.0f,1.0f},
-    {0.5f, -0.5f, 0.0f,0.0f,1.0f,0.0f,1.0f},
-  	{0.0f,  0.5f, 0.0f,0.0f,0.0f,1.0f,1.0f}
+  	{-0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,1.0f},
+    {0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f},
+  	{-0.5f,  0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
+
+		{-0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
+		{0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.0f},
+		{0.5f,  -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f}
   };
 
 	glGenBuffers(1, &m_VBO);
   glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-  glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(Vertex), verts, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), verts, GL_STATIC_DRAW);
 
 	glGenVertexArrays(1,&m_VAO);
 	glBindVertexArray(m_VAO);
@@ -39,7 +45,9 @@ void MyGame::initScene()
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 4, GL_FLOAT,	GL_FALSE, sizeof(Vertex),
 		(void**)(3*sizeof(float)));
-
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT,	GL_FALSE, sizeof(Vertex),
+			(void**)(7*sizeof(float)));
 
 
 	GLuint vertexShaderProgram=0;
@@ -92,5 +100,5 @@ void MyGame::render()
 		mat4 MVP = m_ProjMatrix*m_ViewMatrix*m_ModelMatrix;
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 	}
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
 }
