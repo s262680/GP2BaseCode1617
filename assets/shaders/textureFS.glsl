@@ -9,5 +9,4 @@ uniform sampler2D diffuseSampler;
 void main()
 {
 	FragColor = texture(diffuseSampler,vertexTextureCoordsOut)*vertexColoursOut;
-		FragColor = vertexColoursOut;
 }

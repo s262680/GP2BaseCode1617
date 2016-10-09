@@ -73,10 +73,19 @@ void MyGame::initScene()
 	//lets load texture
 	string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
 	m_Texture = loadTextureFromFile(texturePath);
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glGenSamplers(1,&m_ClampSampler);
+	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
 }
 
 void MyGame::destroyScene()
 {
+	glDeleteSamplers(1,&m_ClampSampler);
 	glDeleteTextures(1, &m_Texture);
 	glDeleteProgram(m_ShaderProgram);
 	glDeleteBuffers(1, &m_VBO);
@@ -105,7 +114,7 @@ void MyGame::render()
 		mat4 MVP = m_ProjMatrix*m_ViewMatrix*m_ModelMatrix;
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 	}
-
+	glBindSampler(0, m_ClampSampler);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 	GLint textureLocation = glGetUniformLocation(m_ShaderProgram, "diffuseSampler");

@@ -26,5 +26,6 @@ private:
 	mat4 m_ModelMatrix;
 
 	GLuint m_Texture;
+	GLuint m_ClampSampler;
 };
 #endif
