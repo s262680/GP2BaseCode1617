@@ -24,5 +24,7 @@ private:
 	mat4 m_ViewMatrix;
 	mat4 m_ProjMatrix;
 	mat4 m_ModelMatrix;
+
+	GLuint m_Texture;
 };
 #endif
