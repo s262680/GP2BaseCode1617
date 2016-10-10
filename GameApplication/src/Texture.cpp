@@ -6,7 +6,7 @@ GLuint loadTextureFromMemory(const char * pMem, int size)
 	SDL_Surface	*imageSurface = IMG_Load_RW(rw,1);
 	if (!imageSurface){
 
-		cout << "Can't Load	image "  << " " << IMG_GetError();
+		LOG(ERROR,"Can't Load	image %s",IMG_GetError());
 		return	0;
 	}
 
@@ -22,7 +22,7 @@ GLuint	loadTextureFromFile(const string&	filename)
 	SDL_Surface	*imageSurface = IMG_Load(filename.c_str());
 	if (!imageSurface){
 
-		cout << "Can't Load	image " << filename << " " << IMG_GetError();
+		LOG(ERROR,"Can't Load	image %s",IMG_GetError());
 		return	0;
 	}
 
@@ -37,7 +37,7 @@ GLuint	loadTextureFromFont(const string& fontFilename, int	pointSize, const stri
 	TTF_Font	*	font = TTF_OpenFont(fontFilename.c_str(), pointSize);
 	if (!font)
 	{
-		cout << "Unable	to load font	" << fontFilename << "	" << TTF_GetError();
+		LOG(ERROR,"Can't Load	Font %s",TTF_GetError());
 		return	0;
 	}
 	SDL_Surface	*textSurface = TTF_RenderText_Blended(font, text.c_str(), { 255, 255, 255 });
@@ -81,7 +81,7 @@ GLuint convertSDLSurfaceToTexture(SDL_Surface * surface)
 		}
 	}
 	else{
-		cout<< "warning: the image is not truecolor.. this will	probably break";
+		LOG(ERROR,"%s","Can't convert texture");
 		return 0;
 	}
 
