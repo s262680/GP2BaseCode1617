@@ -66,7 +66,7 @@
 #  License text for the above reference.)
 
 message("<FindSDL2.cmake>")
-message("$ENV{SDL2DIR}")
+message("$ENV{SDL2_PATH}")
 
 SET(SDL2_SEARCH_PATHS
 	~/Library/Frameworks
@@ -77,7 +77,7 @@ SET(SDL2_SEARCH_PATHS
 	/opt/local # DarwinPorts
 	/opt/csw # Blastwave
 	/opt
-	${SDL2_PATH}
+	$ENV{SDL2_PATH}
 )
 
 FIND_PATH(SDL2_INCLUDE_DIR SDL.h
