@@ -57,7 +57,23 @@ void GameApplication::parseConfig(int args,char * arg[])
 void GameApplication::initGraphics()
 {
 
-    m_GLcontext = SDL_GL_CreateContext(m_pWindow);
+  //OpenGl Context
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+  SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+  m_GLcontext = SDL_GL_CreateContext(m_pWindow);
+
+  //GLEW
+  glewExperimental = GL_TRUE;
+
+  GLenum err = glewInit();
+
+  if (GLEW_OK != err)	{
+    LOG(ERROR,"Error: %s",glewGetErrorString(err));
+  }
+
     //Smooth shading
 		glShadeModel( GL_SMOOTH );
 
