@@ -1,6 +1,10 @@
 #include "MyGame.h"
 
-struct Vertex{float x,y,z};
+struct Vertex { float x, y, z; };
+
+const std::string ASSET_PATH = "assets";
+const std::string SHADER_PATH = "/shaders";
+
 
 MyGame::MyGame()
 {
@@ -15,6 +19,8 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
+	GameApplication::initScene();
+
 	Vertex verts[] = {
 		{-0.5f,-0.5f,0.0f},
 		{ 0.5f,-0.5f,0.0f },
@@ -35,30 +41,18 @@ void MyGame::initScene()
 
 void MyGame::destroyScene()
 {
+	GameApplication::destroyScene();
+
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
 }
 
 void MyGame::render()
 {
+	GameApplication::render();
 }
 
 void MyGame::update()
 {
-}
-
-void GameApplication::initScene()
-{
-}
-
-void GameApplication::destroyScene()
-{
-}
-
-void GameApplication::render()
-{
-}
-
-void GameApplication::update()
-{
+	GameApplication::update();
 }
