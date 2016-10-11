@@ -8,5 +8,10 @@ class MyGame:public GameApplication
 public:
 	MyGame();
 	~MyGame();
+
+	void initScene();
+	void destroyScene();
+	void render();
+	void update();
 };
 #endif
