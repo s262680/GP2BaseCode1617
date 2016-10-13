@@ -1,6 +1,9 @@
 #include "MyGame.h"
 
-struct Vertex { float x, y, z; };
+struct Vertex { 
+	float x, y, z; 
+	float r, g, b, a;
+};
 
 const std::string ASSET_PATH = "assets";
 const std::string SHADER_PATH = "/shaders";
@@ -22,9 +25,10 @@ void MyGame::initScene()
 	GameApplication::initScene();
 
 	Vertex verts[] = {
-		{-0.5f,-0.5f,0.0f},
-		{ 0.5f,-0.5f,0.0f },
-		{ 0.0f,0.5f,0.0f },
+		{-0.5f,-0.5f,0.0f, 1.0f,0.0f,0.0f,1.0f},
+		{ 0.5f,-0.5f,0.0f, 0.0f,1.0f,0.0f,1.0f },
+		{ 0.0f,0.5f,0.0f, 0.0f,0.0f,1.0f,1.0f },
+		
 	};
 
 	GLuint vertexShaderProgram = 0;
@@ -55,6 +59,9 @@ void MyGame::initScene()
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(3*sizeof(float)));
 }
 
 void MyGame::destroyScene()
@@ -73,12 +80,22 @@ void MyGame::render()
 	glBindVertexArray(m_VAO);
 
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
+	GLint FCLocation = glGetUniformLocation(m_ShaderProgram, "FragColor");
 
 	if (MVPLocation != -1)
 	{
 		mat4 MVP = m_ProjMatrix*m_ViewMatrix*m_ModelMatrix;
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+		
 	}
+
+	if (FCLocation != -1)
+	{
+		vec4 FragColor = { 1.0f,0.0f,0.0f,1.0f };
+		glUniform4fv(FCLocation, 1, FragColor);
+
+	}
+
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 

@@ -1,8 +1,8 @@
 #version 410
 
-out vec4 FragColor;
+uniform vec4 FragColor;
 
 void main()
 {
-FragColor=vec4(1.0f,1.0f,1.0f,1.0f);
+gl_FragColor=FragColor;
 }
