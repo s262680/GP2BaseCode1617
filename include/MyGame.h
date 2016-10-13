@@ -14,6 +14,13 @@ public:
 	void render();
 	void update();
 
+	GLuint m_ShaderProgram;
+
+	//matrices
+	mat4 m_ViewMatrix;
+	mat4 m_ProjMatrix;
+	mat4 m_ModelMatrix;
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
