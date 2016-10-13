@@ -1,10 +1,6 @@
 #include "MyGame.h"
 
-struct Vertex {
-	float x, y, z;
-	float r, g, b, a;
-	float tu, tv;
-};
+
 
 const std::string ASSET_PATH = "assets";
 const std::string SHADER_PATH = "/shaders";
@@ -22,10 +18,22 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
+	Vertex verts[]={
+		{vec3(-0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,3.0f)},
+		{vec3(0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)},
+		{vec3(-0.5f,  0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
+
+		{vec3(-0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
+		{vec3(0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,0.0f)},
+		{vec3(0.5f,  -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)}
+
+	};
+	/*
 	Vertex verts[] = {
 	{-0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,3.0f},
 	{0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,3.0f},
 	{-0.5f,  0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
+
 		{-0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
 		{0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,0.0f},
 		{0.5f,  -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,3.0f}
@@ -43,10 +51,10 @@ void MyGame::initScene()
 		NULL);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void**)(3 * sizeof(float)));
+		(void**)(offsetof(Vertex,colours)));
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void**)(7 * sizeof(float)));
+		(void**)(offsetof(Vertex,TexCoords0)));*/
 
 
 	GLuint vertexShaderProgram = 0;
@@ -80,6 +88,14 @@ void MyGame::initScene()
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	m_CurrentMesh=m_StaticMeshManager->createMesh("Sprite1",verts,6);
+
+	/*
+	m_CurrentMesh=unique_ptr<Mesh>(new Mesh);
+	m_CurrentMesh->startVertexIndex=0;
+	m_CurrentMesh->numberOfVertices=6;
+	m_CurrentMesh->Verts.insert(m_CurrentMesh->Verts.end(), &verts[0], &verts[6]);*/
 }
 
 void MyGame::destroyScene()
@@ -87,8 +103,8 @@ void MyGame::destroyScene()
 	glDeleteSamplers(1,&m_ClampSampler);
 	glDeleteTextures(1, &m_Texture);
 	glDeleteProgram(m_ShaderProgram);
-	glDeleteBuffers(1, &m_VBO);
-	glDeleteVertexArrays(1, &m_VAO);
+	//glDeleteBuffers(1, &m_VBO);
+	//glDeleteVertexArrays(1, &m_VAO);
 }
 
 void MyGame::update()
@@ -105,7 +121,9 @@ void MyGame::render()
 	GameApplication::render();
 
 	glUseProgram(m_ShaderProgram);
-	glBindVertexArray(m_VAO);
+	m_StaticMeshManager->bind();
+
+	//glBindVertexArray(m_VAO);
 
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
 	if (MVPLocation != -1)
@@ -122,5 +140,5 @@ void MyGame::render()
 		glUniform1i(textureLocation, 0);
 	}
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawArrays(GL_TRIANGLES, m_CurrentMesh->startVertexIndex, m_CurrentMesh->numberOfVertices);
 }

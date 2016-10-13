@@ -27,5 +27,7 @@ private:
 
 	GLuint m_Texture;
 	GLuint m_ClampSampler;
+
+	shared_ptr<Mesh> m_CurrentMesh;
 };
 #endif

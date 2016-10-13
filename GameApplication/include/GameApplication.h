@@ -4,6 +4,8 @@
 #include "Common.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Vertex.h"
+#include "Mesh.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -60,5 +62,7 @@ protected:
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
+
+	unique_ptr<MeshManager> m_StaticMeshManager;
 };
 #endif
