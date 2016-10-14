@@ -84,8 +84,6 @@ void GameApplication::initGraphics()
 		//The depth test to use
 		glDepthFunc( GL_LEQUAL );
 
-		//Turn on best perspective correction
-		glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
     setViewport((int)m_WindowWidth,(int)m_WindowHeight);
 
