@@ -16,8 +16,21 @@ struct Mesh
   vector<int> Indices;
 };
 
+class IMeshManager
+{
+public:
+	virtual ~IMeshManager() {};
+	virtual  void bind() = 0;
+	virtual bool create(int bufferSize)=0;
+	virtual void destroy()=0;
 
-class MeshManager
+	virtual shared_ptr<Mesh> createMesh(const string &name, Vertex *pVerts, int numberOfVertices, int *pIndices, int numberOfIndices)=0;
+	virtual shared_ptr<Mesh> getMesh(const string &name)=0;
+
+	virtual bool meshExists(const string &name)=0;
+};
+
+class MeshManager:public IMeshManager
 {
 public:
   MeshManager();
