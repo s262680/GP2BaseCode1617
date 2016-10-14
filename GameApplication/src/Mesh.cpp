@@ -7,6 +7,9 @@ MeshManager::MeshManager()
   m_CurrentVertexBufferOffetBytes=0;
   m_VertexBufferSize=0;
   m_CurrentVertexBufferIndex=0;
+  m_CurrentElementBufferOffetBytes=0;
+  m_CurrentElementBufferIndex=0;
+  m_ElementBufferSize=0;
 }
 
 MeshManager::~MeshManager()
@@ -26,17 +29,24 @@ bool MeshManager::meshExists(const string &name)
 
 bool MeshManager::copyVertexData(Vertex *pVertex,int numberOfVertices,int *pIndices,int numberOfIndices)
 {
-  int sizeInBytes=numberOfVertices*sizeof(Vertex);
-  if ((sizeInBytes+m_CurrentVertexBufferOffetBytes)>m_VertexBufferSize)
+  int sizeInBytesVBO=numberOfVertices*sizeof(Vertex);
+  int sizeInBytesEBO = numberOfIndices * sizeof(int);
+
+  if ( ((sizeInBytesVBO +m_CurrentVertexBufferOffetBytes)>m_VertexBufferSize) || ((sizeInBytesVBO+m_CurrentElementBufferOffetBytes)>m_ElementBufferSize))
   {
     LOG(WARNING,"%s","Buffer is full, consider increasing size");
     return false;
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-  glBufferSubData(GL_ARRAY_BUFFER,m_CurrentVertexBufferOffetBytes,sizeInBytes,pVertex);
-  m_CurrentVertexBufferOffetBytes+=sizeInBytes;
+  glBufferSubData(GL_ARRAY_BUFFER,m_CurrentVertexBufferOffetBytes, sizeInBytesVBO,pVertex);
+  m_CurrentVertexBufferOffetBytes+= sizeInBytesVBO;
   m_CurrentVertexBufferIndex+=numberOfVertices;
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+  glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, m_CurrentElementBufferOffetBytes, sizeInBytesEBO, pIndices);
+  m_CurrentElementBufferOffetBytes += sizeInBytesEBO;
+  m_CurrentElementBufferIndex += numberOfIndices;
 
 
   return true;
@@ -53,9 +63,13 @@ shared_ptr<Mesh> MeshManager::createMesh(const string &name,Vertex *pVerts,int n
   mesh=shared_ptr<Mesh>(new Mesh());
   mesh->startVertexIndex=m_CurrentVertexBufferIndex;
   mesh->numberOfVertices=numberOfVertices;
-  mesh->Verts.insert(mesh->Verts.end(), &pVerts[0], &pVerts[numberOfVertices]);
+  mesh->startIndex = m_CurrentElementBufferIndex;
+  mesh->numberOfIndices=numberOfIndices;
 
-  if (copyVertexData(pVerts,numberOfVertices))
+  mesh->Verts.insert(mesh->Verts.end(), &pVerts[0], &pVerts[numberOfVertices]);
+  mesh->Indices.insert(mesh->Indices.end(), &pIndices[0], &pIndices[numberOfIndices]);
+
+  if (copyVertexData(pVerts,numberOfVertices,pIndices,numberOfIndices))
   {
     return mesh;
   }
@@ -93,6 +107,7 @@ bool MeshManager::create(int bufferSize)
 		(void**)(offsetof(Vertex,TexCoords0)));
 
   m_VertexBufferSize=bufferSize * sizeof(Vertex);
+  m_ElementBufferSize = 3 * bufferSize*sizeof(int);
   return true;
 }
 

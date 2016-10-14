@@ -6,11 +6,16 @@
 
 struct Mesh
 {
-  float startVertexIndex;
-  float numberOfVertices;
+  int startVertexIndex;
+  int numberOfVertices;
+
+  int startIndex;
+  int numberOfIndices;
 
   vector<Vertex> Verts;
+  vector<int> Indices;
 };
+
 
 class MeshManager
 {
@@ -35,17 +40,18 @@ private:
 private:
   vector<shared_ptr<Mesh> > m_MeshList;
   map<string,shared_ptr<Mesh> > m_MeshTable;
+  
   int m_CurrentVertexBufferOffetBytes;
   int m_CurrentVertexBufferIndex;
   int m_VertexBufferSize;
+
   int m_CurrentElementBufferOffetBytes;
   int m_CurrentElementBufferIndex;
   int m_ElementBufferSize;
+
   GLuint m_VBO;
   GLuint m_EBO;
   GLuint m_VAO;
-
-
 };
 
 #endif

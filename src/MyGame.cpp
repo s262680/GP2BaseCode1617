@@ -22,40 +22,13 @@ void MyGame::initScene()
 		{vec3(-0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,3.0f)},
 		{vec3(0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)},
 		{vec3(-0.5f,  0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
-
-		{vec3(-0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
 		{vec3(0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,0.0f)},
-		{vec3(0.5f,  -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)}
-
-	};
-	/*
-	Vertex verts[] = {
-	{-0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,3.0f},
-	{0.5f, -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,3.0f},
-	{-0.5f,  0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
-
-		{-0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,0.0f},
-		{0.5f, 0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,0.0f},
-		{0.5f,  -0.5f, 0.0f,1.0f,1.0f,1.0f,1.0f,3.0f,3.0f}
 	};
 
-	glGenBuffers(1, &m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), verts, GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &m_VAO);
-	glBindVertexArray(m_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		NULL);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void**)(offsetof(Vertex,colours)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void**)(offsetof(Vertex,TexCoords0)));*/
-
+	int indices[] = {
+		0,1,2,
+		2,3,1
+	};
 
 	GLuint vertexShaderProgram = 0;
 	string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
@@ -89,13 +62,7 @@ void MyGame::initScene()
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-	m_CurrentMesh=m_StaticMeshManager->createMesh("Sprite1",verts,6);
-
-	/*
-	m_CurrentMesh=unique_ptr<Mesh>(new Mesh);
-	m_CurrentMesh->startVertexIndex=0;
-	m_CurrentMesh->numberOfVertices=6;
-	m_CurrentMesh->Verts.insert(m_CurrentMesh->Verts.end(), &verts[0], &verts[6]);*/
+	m_CurrentMesh=m_StaticMeshManager->createMesh("Sprite1",verts,4,indices,6);
 }
 
 void MyGame::destroyScene()
@@ -103,8 +70,6 @@ void MyGame::destroyScene()
 	glDeleteSamplers(1,&m_ClampSampler);
 	glDeleteTextures(1, &m_Texture);
 	glDeleteProgram(m_ShaderProgram);
-	//glDeleteBuffers(1, &m_VBO);
-	//glDeleteVertexArrays(1, &m_VAO);
 }
 
 void MyGame::update()
@@ -140,5 +105,7 @@ void MyGame::render()
 		glUniform1i(textureLocation, 0);
 	}
 
-	glDrawArrays(GL_TRIANGLES, m_CurrentMesh->startVertexIndex, m_CurrentMesh->numberOfVertices);
+	//glDrawArrays(GL_TRIANGLES, m_CurrentMesh->startVertexIndex, m_CurrentMesh->numberOfVertices);
+	//glDrawRangeElements(GL_TRIANGLES, m_CurrentMesh->startIndex, m_CurrentMesh->numberOfIndices+1, m_CurrentMesh->numberOfIndices, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, m_CurrentMesh->numberOfIndices, GL_UNSIGNED_INT, NULL);
 }
