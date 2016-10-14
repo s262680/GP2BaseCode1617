@@ -26,19 +26,23 @@ public:
   bool create(int bufferSize);
   void destroy();
 
-  shared_ptr<Mesh> createMesh(const string &name,Vertex *pVerts,int numberOfVertices);
+  shared_ptr<Mesh> createMesh(const string &name,Vertex *pVerts,int numberOfVertices,int *pIndices,int numberOfIndices);
   shared_ptr<Mesh> getMesh(const string &name);
 
   bool meshExists(const string &name);
 private:
-  bool copyVertexData(Vertex *pVertex,int numberOfVertices);
+  bool copyVertexData(Vertex *pVertex,int numberOfVertices,int *pIndices,int numberOfIndices);
 private:
   vector<shared_ptr<Mesh> > m_MeshList;
   map<string,shared_ptr<Mesh> > m_MeshTable;
-  int m_CurrentBufferOffetBytes;
-  int m_CurrentBufferIndex;
-  int m_BufferSize;
+  int m_CurrentVertexBufferOffetBytes;
+  int m_CurrentVertexBufferIndex;
+  int m_VertexBufferSize;
+  int m_CurrentElementBufferOffetBytes;
+  int m_CurrentElementBufferIndex;
+  int m_ElementBufferSize;
   GLuint m_VBO;
+  GLuint m_EBO;
   GLuint m_VAO;
 
 
