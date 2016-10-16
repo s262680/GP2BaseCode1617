@@ -12,8 +12,8 @@ public:
 
 	virtual const string& getName() = 0;
 	virtual void setName(const string& name) = 0;
-	virtual void setParent(shared_ptr<GameObject> gameObject) = 0;
-	virtual shared_ptr<GameObject> getParent() = 0;
+	virtual void setParent(GameObject * gameObject) = 0;
+	virtual GameObject * getParent() = 0;
 
 	virtual void onUpdate() = 0;
 	virtual void onRender() = 0;
@@ -31,15 +31,15 @@ public:
 
 	const string& getName();
 	void setName(const string& name);
-	void setParent(shared_ptr<GameObject> gameObject);
-	shared_ptr<GameObject> getParent();
+	void setParent(GameObject * gameObject);
+	GameObject * getParent();
 
 	virtual void onUpdate();
 	virtual void onRender();
 	virtual void onInit();
 	virtual void onDestroy();
 protected:
-	shared_ptr<GameObject> m_ParentGameObject;
+	GameObject * m_ParentGameObject;
 	string m_Name;
 };
 #endif

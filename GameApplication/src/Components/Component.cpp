@@ -20,12 +20,12 @@ void BaseComponet::setName(const string & name)
 	m_Name = name;
 }
 
-void BaseComponet::setParent(shared_ptr<GameObject> gameObject)
+void BaseComponet::setParent(GameObject * gameObject)
 {
 	m_ParentGameObject = gameObject;
 }
 
-shared_ptr<GameObject> BaseComponet::getParent()
+GameObject * BaseComponet::getParent()
 {
 	return m_ParentGameObject;
 }

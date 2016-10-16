@@ -2,11 +2,15 @@
 
 GameObject::GameObject()
 {
+	shared_ptr<Transform> transformComponent = shared_ptr<Transform>(new Transform());
+	addComponent(transformComponent);
+	m_Transform = transformComponent.get();
+
 }
 
 GameObject::~GameObject()
 {
-	m_Components.clear();
+	
 }
 
 void GameObject::onUpdate()
@@ -37,6 +41,7 @@ void GameObject::onRender()
 
 void GameObject::onInit()
 {
+
 	for (auto &gameObject : m_ChildrenGameObjects)
 	{
 		gameObject->onInit();
@@ -59,11 +64,13 @@ void GameObject::onDestroy()
 	{
 		component->onDestroy();
 	}
+	m_ChildrenGameObjects.clear();
+	m_Components.clear();
 }
 
 void GameObject::addComponent(shared_ptr<IComponent> component)
 {
-	component->setParent(shared_ptr<GameObject>(this));
+	component->setParent(this);
 	m_Components.push_back(component);
 }
 

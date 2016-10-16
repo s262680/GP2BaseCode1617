@@ -62,11 +62,21 @@ void MyGame::initScene()
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glSamplerParameteri(m_ClampSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	m_CurrentMesh=m_StaticMeshManager->createMesh("Sprite1",verts,4,indices,6);
+	m_StaticMeshManager->createMesh("Sprite1",verts,4,indices,6);
+	m_StaticMeshManager->createMesh("Sprite2", verts, 4, indices, 6);
+
+	shared_ptr<MeshComponent> meshComponent = shared_ptr<MeshComponent>(new MeshComponent(m_StaticMeshManager.get()));
+	meshComponent->setMeshID("Sprite1");
+
+	m_TestGO = unique_ptr<GameObject>(new GameObject());
+	m_TestGO->addComponent(meshComponent);
+
+	m_TestGO->onInit();
 }
 
 void MyGame::destroyScene()
 {
+	m_TestGO->onDestroy();
 	glDeleteSamplers(1,&m_ClampSampler);
 	glDeleteTextures(1, &m_Texture);
 	glDeleteProgram(m_ShaderProgram);
@@ -78,7 +88,6 @@ void MyGame::update()
 
 	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
 	m_ViewMatrix = lookAt(vec3(0.0f, 0.0f, 10.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-	m_ModelMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, -0.2f));
 }
 
 void MyGame::render()
@@ -88,12 +97,10 @@ void MyGame::render()
 	glUseProgram(m_ShaderProgram);
 	m_StaticMeshManager->bind();
 
-	//glBindVertexArray(m_VAO);
-
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
 	if (MVPLocation != -1)
 	{
-		mat4 MVP = m_ProjMatrix*m_ViewMatrix*m_ModelMatrix;
+		mat4 MVP = m_ProjMatrix*m_ViewMatrix*m_TestGO->getTransform()->getModelMatrix();
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 	}
 	glBindSampler(0, m_ClampSampler);
@@ -105,7 +112,5 @@ void MyGame::render()
 		glUniform1i(textureLocation, 0);
 	}
 
-	//glDrawArrays(GL_TRIANGLES, m_CurrentMesh->startVertexIndex, m_CurrentMesh->numberOfVertices);
-	//glDrawRangeElements(GL_TRIANGLES, m_CurrentMesh->startIndex, m_CurrentMesh->numberOfIndices+1, m_CurrentMesh->numberOfIndices, GL_UNSIGNED_INT, 0);
-	glDrawElements(GL_TRIANGLES, m_CurrentMesh->numberOfIndices, GL_UNSIGNED_INT, (void**)(m_CurrentMesh->startIndex*4));
+	m_TestGO->onRender();
 }

@@ -24,7 +24,7 @@ Transform::~Transform()
 void Transform::onUpdate()
 {
 	m_RotationXMatrix = rotate(radians(m_Rotation.x), vec3(1.0f, 0.0f, 0.0f));
-	m_RotationXMatrix = rotate(radians(m_Rotation.y), vec3(0.0f, 1.0f, 0.0f));
+	m_RotationYMatrix = rotate(radians(m_Rotation.y), vec3(0.0f, 1.0f, 0.0f));
 	m_RotationZMatrix = rotate(radians(m_Rotation.z), vec3(0.0f, 0.0f, 1.0f));
 	m_RotationMatrix = m_RotationXMatrix*m_RotationYMatrix*m_RotationZMatrix;
 

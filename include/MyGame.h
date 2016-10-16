@@ -28,6 +28,6 @@ private:
 	GLuint m_Texture;
 	GLuint m_ClampSampler;
 
-	shared_ptr<Mesh> m_CurrentMesh;
+	unique_ptr<GameObject> m_TestGO;
 };
 #endif
