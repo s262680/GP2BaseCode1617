@@ -1,4 +1,4 @@
-#include "Components\MeshComponent.h"
+#include "Components/MeshComponent.h"
 
 MeshComponent::MeshComponent(IMeshManager * meshManager)
 {

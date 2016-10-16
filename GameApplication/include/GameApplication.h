@@ -7,8 +7,8 @@
 #include "Vertex.h"
 #include "Mesh.h"
 
-#include "Components\Transform.h"
-#include "Components\MeshComponent.h"
+#include "Components/Transform.h"
+#include "Components/MeshComponent.h"
 #include "GameObject.h"
 
 //Game Application class, this basically wraps up the initialisation of a game

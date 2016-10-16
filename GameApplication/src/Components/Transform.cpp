@@ -1,4 +1,4 @@
-#include "Components\Transform.h"
+#include "Components/Transform.h"
 
 Transform::Transform()
 {
@@ -39,4 +39,3 @@ mat4 & Transform::getModelMatrix()
 {
 	return m_Model;
 }
-

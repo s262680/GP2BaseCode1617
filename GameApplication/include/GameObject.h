@@ -3,8 +3,8 @@
 
 #include "Common.h"
 
-#include "Components\Component.h"
-#include "Components\Transform.h"
+#include "Components/Component.h"
+#include "Components/Transform.h"
 
 class GameObject
 {
@@ -37,7 +37,7 @@ public:
 private:
 	vector<shared_ptr<IComponent> > m_Components;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;
-	
+
 	Transform * m_Transform;
 
 };

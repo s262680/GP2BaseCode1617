@@ -1,4 +1,4 @@
-#include "Components\Component.h"
+#include "Components/Component.h"
 
 BaseComponet::BaseComponet()
 {
