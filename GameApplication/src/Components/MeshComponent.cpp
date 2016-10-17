@@ -3,6 +3,7 @@
 MeshComponent::MeshComponent(IMeshManager * meshManager)
 {
 	m_MeshManager = meshManager;
+	m_Name="Mesh";
 }
 
 MeshComponent::~MeshComponent()
