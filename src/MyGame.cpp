@@ -6,6 +6,7 @@ struct Vertex{
 
 const std::string ASSET_PATH = "assets";
 const std::string SHADER_PATH = "/shaders";
+const std::string TEXTURE_PATH = "/textures";
 
 MyGame::MyGame()
 {
