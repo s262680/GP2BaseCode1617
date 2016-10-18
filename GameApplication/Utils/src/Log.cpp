@@ -36,8 +36,8 @@ void Log::write(unsigned int level,const char* format, ...)
 {
   //need a mutex here
   //filter out messages we are not interested in
-  if ((level & m_CurrentLevel)==0)
-  {
+  //if ((level & m_CurrentLevel)==0)
+  //{
     char    buffer [1024];
     va_list va;
     va_start(va,format);
@@ -56,7 +56,7 @@ void Log::write(unsigned int level,const char* format, ...)
     {
       flush();
     }
-  }
+  //}
 }
 
 void Log::flush()

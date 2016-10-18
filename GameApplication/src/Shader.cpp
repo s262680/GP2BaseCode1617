@@ -54,6 +54,7 @@ GLuint loadShaderFromMemory(const char * pMem, SHADER_TYPE shaderType)
 	glCompileShader(program);
 	if (checkForCompilerErrors(program))
 	{
+    LOG(ERROR,"Compiler Error %s",pMem);
 		return 0;
 	}
 	return program;

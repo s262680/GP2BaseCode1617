@@ -24,17 +24,17 @@ public:
 		return m_Model;
 	}
 
-	void setPosition(vec3& pos)
+	void setPosition(const vec3& pos)
 	{
 		m_Position = pos;
 	};
 
-	void setRotation(vec3& rot)
+	void setRotation(const vec3& rot)
 	{
 		m_Rotation = rot;
 	};
 
-	void setScale(vec3& scale)
+	void setScale(const vec3& scale)
 	{
 		m_Scale = scale;
 	};
