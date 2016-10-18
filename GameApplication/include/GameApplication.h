@@ -5,10 +5,8 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Vertex.h"
-#include "Mesh.h"
+#include "ModelLoading.h"
 
-#include "Components/Transform.h"
-#include "Components/MeshComponent.h"
 #include "GameObject.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
@@ -42,6 +40,8 @@ public:
 	virtual void initScene();
 	virtual void destroyScene();
 
+	virtual void onKeyDown(SDL_Keycode keyCode);
+
 	void OnBeginRender();
 	void OnEndRender();
 	void setViewport( int width, int height );
@@ -66,7 +66,5 @@ protected:
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
-
-	shared_ptr<MeshManager> m_StaticMeshManager;
 };
 #endif

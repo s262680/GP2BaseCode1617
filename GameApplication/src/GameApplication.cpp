@@ -87,9 +87,6 @@ void GameApplication::initGraphics()
 
     setViewport((int)m_WindowWidth,(int)m_WindowHeight);
 
-    m_StaticMeshManager=shared_ptr<MeshManager>(new MeshManager());
-    m_StaticMeshManager->create(10000);
-
 }
 
 void GameApplication::setViewport( int width, int height )
@@ -155,11 +152,13 @@ void GameApplication::destroyScene()
 
 }
 
+void GameApplication::onKeyDown(SDL_Keycode keyCode)
+{
+}
+
 void GameApplication::OnQuit()
 {
 	destroyScene();
-  m_StaticMeshManager->destroy();
-
 	//set our boolean which controls the loop to false
 	m_bIsRunning = false;
   SDL_GL_DeleteContext(m_GLcontext);
@@ -224,6 +223,7 @@ void GameApplication::run()
 			}
 			if (event.type == SDL_KEYDOWN)
 			{
+				onKeyDown(event.key.keysym.sym);
 				if (event.key.keysym.sym == SDLK_ESCAPE)
 				{
 					OnQuit();

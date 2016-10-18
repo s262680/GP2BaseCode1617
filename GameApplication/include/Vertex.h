@@ -6,7 +6,8 @@
 struct Vertex {
 	vec3 position;
 	vec4 colours;
-	vec2 TexCoords0;
+	vec2 texCoords0;
+	vec3 normal;
 };
 
 #endif

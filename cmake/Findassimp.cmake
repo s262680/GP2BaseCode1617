@@ -66,3 +66,7 @@ else(WIN32)
 	endif (assimp_FOUND)
 
 endif(WIN32)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Assimp DEFAULT_MSG ASSIMP_INCLUDE_DIR ASSIMP_LIBRARIES)
+mark_as_advanced(ASSIMP_INCLUDE_DIR ASSIMP_LIBRARIES)

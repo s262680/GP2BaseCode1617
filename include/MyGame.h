@@ -13,21 +13,13 @@ public:
 	void update();
 	void initScene();
 	void destroyScene();
+
+	void onKeyDown(SDL_Keycode keyCode);
 private:
-	GLuint m_VBO;
-	GLuint m_VAO;
-
-	//Shader Program
-	GLuint m_ShaderProgram;
-
 	//matrices
 	mat4 m_ViewMatrix;
 	mat4 m_ProjMatrix;
-	mat4 m_ModelMatrix;
 
-	GLuint m_Texture;
-	GLuint m_ClampSampler;
-
-	unique_ptr<GameObject> m_TestGO;
+	shared_ptr<GameObject> m_TestGO;
 };
 #endif

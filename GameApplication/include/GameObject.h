@@ -2,9 +2,9 @@
 #define GAMEOBJECT_H
 
 #include "Common.h"
-
-#include "Components/Component.h"
-#include "Components/Transform.h"
+#include "Vertex.h"
+#include "Texture.h"
+#include "Shader.h"
 
 class GameObject
 {
@@ -13,32 +13,77 @@ public:
 	~GameObject();
 
 	void onUpdate();
-	void onRender();
+	void onRender(mat4& view, mat4& projection);
 	void onInit();
 	void onDestroy();
 
-	void addComponent(shared_ptr<IComponent> component);
 	void addChild(shared_ptr<GameObject> gameobject);
 
-	template<class type>
-	type * getComponent()
+	mat4& getModelMatrix()
 	{
-		type * c = nullptr;
-		for (auto component : m_Components)
-		{
-			c=dynamic_cast<type*>(component.get());
-			if (c != nullptr)
-				return c;
-		}
-		return c;
+		return m_Model;
+	}
+
+	void setPosition(vec3& pos)
+	{
+		m_Position = pos;
 	};
 
-	Transform * getTransform() { return m_Transform; };
+	void setRotation(vec3& rot)
+	{
+		m_Rotation = rot;
+	};
+
+	void setScale(vec3& scale)
+	{
+		m_Scale = scale;
+	};
+
+	vec3& getPosition()
+	{
+		return m_Position;
+	};
+
+	vec3& getRotation()
+	{
+		return m_Rotation;
+	};
+
+	vec3& getScale()
+	{
+		return m_Scale;
+	};
+
+	void rotate(const vec3& delta);
+
+	void loadTextureFromFile(const string& filename);
+	void loadShadersFromFile(const string& vsFilename, const string& fsFilename);
+	void copyVertexData(Vertex *pVertex, int numberOfVertices, int *pIndices, int numberOfIndices);
 private:
-	vector<shared_ptr<IComponent> > m_Components;
+	GameObject * m_pParent;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;
 
-	Transform * m_Transform;
+	vec3 m_Position;
+	vec3 m_Rotation;
+	vec3 m_Scale;
+
+	mat4 m_TranslationMatrix;
+	mat4 m_ScaleMatrix;
+	mat4 m_RotationMatrix;
+	mat4 m_Model;
+
+	GLuint m_VBO;
+	GLuint m_EBO;
+	GLuint m_VAO;
+	int m_NumberOfVerts;
+	int m_NumberOfIndices;
+
+	//Shader Program
+	GLuint m_ShaderProgram;
+	GLuint m_Texture;
+	GLuint m_Sampler;
+
+	//Materials
 
 };
 
