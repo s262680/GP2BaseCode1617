@@ -1,5 +1,6 @@
 #include "ModelLoading.h"
 
+//http://ogldev.atspace.co.uk/www/tutorial22/tutorial22.html
 shared_ptr<GameObject> loadModelFromFile(const string & filename)
 {
 	shared_ptr<GameObject> gameObject = nullptr;
