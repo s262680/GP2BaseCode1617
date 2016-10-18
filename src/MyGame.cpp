@@ -55,6 +55,9 @@ void MyGame::onKeyDown(SDL_Keycode keyCode)
 	if (keyCode == SDLK_a)
 	{
 		m_TestGO->rotate(vec3(0.0f, -0.5f, 0.0f));
+	}else if (keyCode == SDLK_d)
+	{
+		m_TestGO->rotate(vec3(0.0f, 0.5f, 0.0f));
 	}
 }
 
