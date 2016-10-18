@@ -2,13 +2,15 @@
 
 shared_ptr<GameObject> loadModelFromFile(const string & filename)
 {
-	shared_ptr<GameObject> gameObject = nullptr;
+	LOG(INFO,"Attempting to load model %s",filename.c_str());
+	shared_ptr<GameObject> gameObject = shared_ptr<GameObject>(new GameObject());
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
 	const aiScene* scene = aiImportFile(filename.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-
+	
 	if (scene)
 	{
+		LOG(INFO,"Parsing Model %s",filename.c_str());
 		const aiMesh * mesh=scene->mMeshes[0];
 
 		vector<int> indices;
@@ -35,8 +37,12 @@ shared_ptr<GameObject> loadModelFromFile(const string & filename)
 			verts.push_back(ourV);
 		}
 
-		gameObject = shared_ptr<GameObject>(new GameObject());
+		
 		gameObject->copyVertexData(&verts[0], verts.size(), &indices[0], indices.size());
+	}
+	else
+	{
+		LOG(ERROR,"Error Parsing Model %s",aiGetErrorString());
 	}
 
 	aiReleaseImport(scene);

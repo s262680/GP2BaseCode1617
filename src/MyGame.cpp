@@ -43,10 +43,11 @@ void MyGame::initScene()
 	m_TestGO->copyVertexData(verts, 4, indices, 6);*/
 
 	string modelPath = ASSET_PATH + MODEL_PATH + "/utah-teapot.fbx";
-	m_TestGO=loadModelFromFile(modelPath);
 	string vsFilename = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
 	string fsFilename = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	m_TestGO=loadModelFromFile(modelPath);
 	m_TestGO->loadShadersFromFile(vsFilename, fsFilename);
+
 	m_TestGO->setScale(vec3(0.5f, 0.5f, 0.5f));
 }
 
