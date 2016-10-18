@@ -16,6 +16,9 @@ public:
 	void initScene();
 
 	void destroyScene();
+
+	GLuint m_Texture;
+	GLuint m_Sampler;
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;

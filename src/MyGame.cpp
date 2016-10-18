@@ -85,10 +85,29 @@ void MyGame::initScene()
 
   glDeleteShader(vertexShaderProgram);
 	glDeleteShader(fragmentShaderProgram);
+
+
+
+	string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
+	
+	m_Texture = loadTextureFromFile(texturePath);
+
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+
+
+	glGenSamplers(1, &m_Sampler);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
 }
 
 void MyGame::destroyScene()
 {
+	glDeleteSamplers(1, &m_Sampler);
+	glDeleteTextures(1, &m_Texture);
   GameApplication::destroyScene();
   glDeleteProgram(m_ShaderProgram);
   glDeleteVertexArrays(1,&m_VAO);
