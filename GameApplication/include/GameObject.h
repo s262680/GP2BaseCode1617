@@ -59,6 +59,11 @@ public:
 	void loadTextureFromFile(const string& filename);
 	void loadShadersFromFile(const string& vsFilename, const string& fsFilename);
 	void copyVertexData(Vertex *pVertex, int numberOfVertices, int *pIndices, int numberOfIndices);
+
+	GLuint getShaderProgram()
+	{
+		return m_ShaderProgram;
+	};
 private:
 	GameObject * m_pParent;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;
@@ -84,7 +89,10 @@ private:
 	GLuint m_Sampler;
 
 	//Materials
-
+	vec4 m_AmbientMaterialColour;
+	vec4 m_DiffuseMaterialColour;
+	vec4 m_SpecularMaterialColour;
+	float m_SpecularMaterialPower;
 };
 
 #endif

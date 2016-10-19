@@ -23,11 +23,16 @@ GameObject::GameObject()
 	m_Texture=0;
 	m_Sampler=0;
 	m_pParent = nullptr;
+
+	m_AmbientMaterialColour=vec4(0.2f,0.2f,0.2f,1.0f);
+	m_DiffuseMaterialColour=vec4(0.5f,0.5f,0.5f,1.0f);
+	m_SpecularMaterialColour=vec4(1.0f,1.0f,1.0f,1.0f);
+	m_SpecularMaterialPower=25.0f;
 }
 
 GameObject::~GameObject()
 {
-	
+
 }
 
 void GameObject::onUpdate()
@@ -54,19 +59,18 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	glBindVertexArray(m_VAO);
 
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
-	if (MVPLocation != -1)
-	{
-		mat4 MVP = projection*view*m_Model;
-		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
-	}
+	mat4 MVP = projection*view*m_Model;
+	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+
+	GLint ModelLocation = glGetUniformLocation(m_ShaderProgram, "Model");
+	glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(m_Model));
+
 	glBindSampler(0, m_Sampler);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 	GLint textureLocation = glGetUniformLocation(m_ShaderProgram, "diffuseSampler");
-	if (textureLocation != -1)
-	{
-		glUniform1i(textureLocation, 0);
-	}
+	glUniform1i(textureLocation, 0);
+
 	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, NULL);
 }
 

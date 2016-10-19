@@ -8,7 +8,7 @@ shared_ptr<GameObject> loadModelFromFile(const string & filename)
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
 	const aiScene* scene = aiImportFile(filename.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-	
+
 	if (scene)
 	{
 		LOG(INFO,"Parsing Model %s",filename.c_str());
@@ -38,7 +38,7 @@ shared_ptr<GameObject> loadModelFromFile(const string & filename)
 			verts.push_back(ourV);
 		}
 
-		
+
 		gameObject->copyVertexData(&verts[0], verts.size(), &indices[0], indices.size());
 	}
 	else
