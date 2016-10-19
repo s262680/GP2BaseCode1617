@@ -60,6 +60,14 @@ void MyGame::onKeyDown(SDL_Keycode keyCode)
 	{
 		m_TestGO->rotate(vec3(0.0f, 0.5f, 0.0f));
 	}
+	if (keyCode==SDLK_w)
+	{
+		m_TestGO->rotate(vec3(-0.5f,0.0f,0.0f));
+	}
+	else if (keyCode==SDLK_s)
+	{
+		m_TestGO->rotate(vec3(0.5f,0.0f,0.0f));
+	}
 }
 
 void MyGame::destroyScene()
