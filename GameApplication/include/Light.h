@@ -8,7 +8,7 @@ struct Light
   vec4 DiffuseColour;
   vec4 SpecularColour;
 
-  vec3 LightDirection;
+  vec3 Direction;
 };
 
 #endif

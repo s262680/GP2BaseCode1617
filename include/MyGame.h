@@ -21,5 +21,9 @@ private:
 	mat4 m_ProjMatrix;
 
 	shared_ptr<GameObject> m_TestGO;
+	shared_ptr<Light> m_Light;
+	vec4 m_AmbientLightColour;
+
+	vec3 m_CameraPosition;
 };
 #endif

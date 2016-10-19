@@ -64,6 +64,26 @@ public:
 	{
 		return m_ShaderProgram;
 	};
+
+	void setAmbientMaterialColour(const vec4& colour)
+	{
+		m_AmbientMaterialColour = colour;
+	};
+
+	void setDiffuseMaterialColour(const vec4& colour)
+	{
+		m_DiffuseMaterialColour = colour;
+	};
+
+	void setSpecularMaterialColour(const vec4& colour)
+	{
+		m_SpecularMaterialColour = colour;
+	};
+
+	void setSpecularPower(float power)
+	{
+		m_SpecularMaterialPower = power;
+	};
 private:
 	GameObject * m_pParent;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;
