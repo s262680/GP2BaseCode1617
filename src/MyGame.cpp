@@ -2,7 +2,7 @@
 
 struct Vertex{
   float x,y,z;
-  //float u, v;
+  float u, v ;
 };
 
 const std::string ASSET_PATH = "assets";
@@ -45,6 +45,16 @@ void MyGame::render()
     glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
   }
 
+  glBindSampler(0, m_Sampler);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, m_Texture);
+  GLint textureLocation = glGetUniformLocation(m_ShaderProgram, "diffuseSampler");
+  if (textureLocation != -1)
+  {
+	  glUniform1i(textureLocation, 0);
+  }
+
+
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
@@ -53,12 +63,12 @@ void MyGame::initScene()
   GameApplication::initScene();
 
   Vertex verts[]={
-    {0.0f, 0.0f, 0.0f},
-      {0.5f, 0.0f, 0.0f},
-    {0.0f,  0.5f, 0.0f},
-	{ 0.5f, 0.0f, 0.0f },
-	{ 0.0f,  0.5f, 0.0f },
-	{ 0.5f, 0.5f, 0.0f }
+    {0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+    {1.0f, 0.0f, 0.0f, 1.0f, 1.0f},
+    {0.0f,  1.0f, 0.0f, 0.0f, 0.0f},
+	{ 1.0f, 0.0f, 0.0f , 1.0f, 1.0f },
+	{ 0.0f,  1.0f, 0.0f, 0.0f,0.0f},
+	{ 1.0f, 1.0f, 0.0f ,1.0f,0.0f}
 	
   };
 
@@ -74,12 +84,15 @@ void MyGame::initScene()
   //the 3 represent (x,y,z);
   glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE, sizeof(Vertex),NULL);
 
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(3*sizeof(float)));
+
   GLuint vertexShaderProgram=0;
 	std::string vsPath = ASSET_PATH + SHADER_PATH+"/simpleVS.glsl";
 	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
 
 	GLuint fragmentShaderProgram=0;
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
 	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
 
   m_ShaderProgram = glCreateProgram();
