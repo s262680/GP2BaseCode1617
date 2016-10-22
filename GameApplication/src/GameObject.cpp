@@ -37,10 +37,11 @@ GameObject::~GameObject()
 
 void GameObject::onUpdate()
 {
-	mat4 rotationXMatrix = ::rotate(radians(m_Rotation.x), vec3(1.0f, 0.0f, 0.0f));
-	mat4 rotationYMatrix = ::rotate(radians(m_Rotation.y), vec3(0.0f, 1.0f, 0.0f));
-	mat4 rotationZMatrix = ::rotate(radians(m_Rotation.z), vec3(0.0f, 0.0f, 1.0f));
-	m_RotationMatrix = rotationXMatrix*rotationYMatrix*rotationZMatrix;
+	//mat4 rotationXMatrix = ::rotate(radians(m_Rotation.x), vec3(1.0f, 0.0f, 0.0f));
+	//mat4 rotationYMatrix = ::rotate(radians(m_Rotation.y), vec3(0.0f, 1.0f, 0.0f));
+	//mat4 rotationZMatrix = ::rotate(radians(m_Rotation.z), vec3(0.0f, 0.0f, 1.0f));
+	m_RotationMatrix=eulerAngleYXZ(m_Rotation.y,m_Rotation.x,m_Rotation.z);
+	//m_RotationMatrix = rotationXMatrix*rotationYMatrix*rotationZMatrix;
 
 	m_ScaleMatrix = scale(m_Scale);
 

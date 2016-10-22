@@ -7,7 +7,7 @@ shared_ptr<GameObject> loadModelFromFile(const string & filename)
 	shared_ptr<GameObject> gameObject = shared_ptr<GameObject>(new GameObject());
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
-	const aiScene* scene = aiImportFile(filename.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals);
 
 	if (scene)
 	{
