@@ -30,7 +30,7 @@ void MyGame::initScene()
 	m_Light = shared_ptr<Light>(new Light());
 	m_Light->DiffuseColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Light->SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->Direction = vec3(0.0f, 0.0f, 1.0f);
+	m_Light->Direction = vec3(0.0f, 0.0f, -1.0f);
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
@@ -38,18 +38,18 @@ void MyGame::onKeyDown(SDL_Keycode keyCode)
 {
 	if (keyCode == SDLK_a)
 	{
-		m_TestGO->rotate(vec3(0.0f, -0.5f, 0.0f));
+		m_TestGO->rotate(vec3(0.0f, -0.1f, 0.0f));
 	}else if (keyCode == SDLK_d)
 	{
-		m_TestGO->rotate(vec3(0.0f, 0.5f, 0.0f));
+		m_TestGO->rotate(vec3(0.0f, 0.1f, 0.0f));
 	}
 	if (keyCode==SDLK_w)
 	{
-		m_TestGO->rotate(vec3(-0.5f,0.0f,0.0f));
+		m_TestGO->rotate(vec3(-0.1f,0.0f,0.0f));
 	}
 	else if (keyCode==SDLK_s)
 	{
-		m_TestGO->rotate(vec3(0.5f,0.0f,0.0f));
+		m_TestGO->rotate(vec3(0.1f,0.0f,0.0f));
 	}
 }
 
