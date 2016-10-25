@@ -6,7 +6,7 @@ GameObject::GameObject()
 	m_Rotation = vec3(0.0f, 0.0f, 0.0f);
 	m_Scale = vec3(1.0f, 1.0f, 1.0f);
 
-	m_Model = mat4(1.0f);
+	m_ModelMatrix = mat4(1.0f);
 	m_TranslationMatrix = mat4(1.0f);
 	m_ScaleMatrix = mat4(1.0f);
 
@@ -47,10 +47,10 @@ void GameObject::onUpdate()
 
 	m_TranslationMatrix = translate(m_Position);
 
-	m_Model = m_TranslationMatrix*m_RotationMatrix*m_ScaleMatrix;
+	m_ModelMatrix = m_TranslationMatrix*m_RotationMatrix*m_ScaleMatrix;
 	if (m_pParent)
 	{
-		m_Model *= m_pParent->getModelMatrix();
+		m_ModelMatrix *= m_pParent->getModelMatrix();
 	}
 }
 
@@ -60,11 +60,11 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	glBindVertexArray(m_VAO);
 
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
-	mat4 MVP = projection*view*m_Model;
+	mat4 MVP = projection*view*m_ModelMatrix;
 	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
 	GLint ModelLocation = glGetUniformLocation(m_ShaderProgram, "Model");
-	glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(m_Model));
+	glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(m_ModelMatrix));
 
 	glBindSampler(0, m_Sampler);
 	glActiveTexture(GL_TEXTURE0);
@@ -113,9 +113,9 @@ void GameObject::rotate(const vec3 & delta)
 	m_Rotation += delta;
 }
 
-void GameObject::loadTextureFromFile(const string & filename)
+void GameObject::loadTexture(const string & filename)
 {
-	m_Texture = ::loadTextureFromFile(filename);
+	m_Texture = loadTextureFromFile(filename);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -127,7 +127,7 @@ void GameObject::loadTextureFromFile(const string & filename)
 
 }
 
-void GameObject::loadShadersFromFile(const string & vsFilename, const string & fsFilename)
+void GameObject::loadShaders(const string & vsFilename, const string & fsFilename)
 {
 	GLuint vertexShaderProgram = loadShaderFromFile(vsFilename, VERTEX_SHADER);
 

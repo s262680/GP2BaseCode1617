@@ -21,7 +21,7 @@ public:
 
 	mat4& getModelMatrix()
 	{
-		return m_Model;
+		return m_ModelMatrix;
 	}
 
 	void setPosition(const vec3& pos)
@@ -56,8 +56,8 @@ public:
 
 	void rotate(const vec3& delta);
 
-	void loadTextureFromFile(const string& filename);
-	void loadShadersFromFile(const string& vsFilename, const string& fsFilename);
+	void loadTexture(const string& filename);
+	void loadShaders(const string& vsFilename, const string& fsFilename);
 	void copyVertexData(Vertex *pVertex, int numberOfVertices, int *pIndices, int numberOfIndices);
 
 	GLuint getShaderProgram()
@@ -95,7 +95,7 @@ private:
 	mat4 m_TranslationMatrix;
 	mat4 m_ScaleMatrix;
 	mat4 m_RotationMatrix;
-	mat4 m_Model;
+	mat4 m_ModelMatrix;
 
 	GLuint m_VBO;
 	GLuint m_EBO;
