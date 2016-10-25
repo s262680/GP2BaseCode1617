@@ -8,6 +8,9 @@
 #include "Texture.h"
 #include "Vertex.h"
 
+
+//TO DO: need to add function to change position, rotation and scale
+
 class GameObject
 {
 public:
