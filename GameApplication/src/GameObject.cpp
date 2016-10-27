@@ -107,6 +107,7 @@ void GameObject::loadShaders(const string & vsFilename, const string & fsFilenam
 
 void GameObject::copyVertexData(Vertex * pVerts, int numberOfvertcies)
 {
+	m_NumberOfVertices = numberOfvertcies;
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, numberOfvertcies * sizeof(Vertex), pVerts, GL_STATIC_DRAW);
