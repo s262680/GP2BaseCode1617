@@ -13,7 +13,7 @@ GameApplication::GameApplication()
 
 GameApplication::~GameApplication()
 {
-
+	
 }
 
 void GameApplication::createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags)
@@ -110,6 +110,8 @@ void GameApplication::setViewport( int width, int height )
 
 bool GameApplication::init(int args,char * arg[])
 {
+	
+
   parseConfig(args,arg);
 
 	//Controls the game loop
@@ -232,6 +234,7 @@ void GameApplication::run()
 						LOG(ERROR, "Can't Maximize %s", SDL_GetError());
 					}
 				}
+				
 			}
 			if (event.type == SDL_WINDOWEVENT)
 			{

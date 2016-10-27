@@ -47,6 +47,7 @@ public:
 
 	void createWindow(const string& windowTitle,const unsigned int width, const unsigned int height, const unsigned int windowFlags=0);
 	void initGraphics();
+
 protected:
 	//SDL Windows
 	SDL_Window * m_pWindow;
@@ -62,5 +63,7 @@ protected:
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
+
+	
 };
 #endif

@@ -29,6 +29,9 @@ public:
 	void loadShaders(const string& vsFilename, const string& fsFilename);
 	void copyVertexData(Vertex*pVertex, int numberOfVertices);
 
+	
+
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
