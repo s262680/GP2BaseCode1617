@@ -21,10 +21,13 @@ void MyGame::initScene()
 		{vec3(-0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,3.0f)},
 		{vec3(0.5f, -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)},
 		{vec3(-0.5f,  0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
-		{vec3(-0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
+		//{vec3(-0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(0.0f,0.0f)},
 		{vec3(0.5f, 0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,0.0f)},
-		{vec3(0.5f,  -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)}
+		//{vec3(0.5f,  -0.5f, 0.0f),vec4(1.0f,1.0f,1.0f,1.0f),vec2(3.0f,3.0f)}
 	};
+	
+	
+	int Indices[] = { 0,1,2,2,3,1 };
 
 	m_TestObject = new GameObject();
 
@@ -36,7 +39,8 @@ void MyGame::initScene()
 	string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
 	m_TestObject->loadTexture(texturePath);
 
-	m_TestObject->copyVertexData(verts, 6);	
+	//m_TestObject->copyVertexData(verts, 6);	
+	m_TestObject->copyVertexData(verts,4,Indices,6);
 }
 
 void MyGame::destroyScene()
