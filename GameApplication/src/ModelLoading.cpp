@@ -1,10 +1,10 @@
 #include "ModelLoading.h"
 
 //http://ogldev.atspace.co.uk/www/tutorial22/tutorial22.html
-shared_ptr<GameObject> loadModelFromFile(const string & filename)
+GameObject * loadModelFromFile(const string & filename)
 {
 	LOG(INFO,"Attempting to load model %s",filename.c_str());
-	shared_ptr<GameObject> gameObject = shared_ptr<GameObject>(new GameObject());
+	GameObject *gameObject = new GameObject();
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
 	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals);
@@ -31,10 +31,11 @@ shared_ptr<GameObject> loadModelFromFile(const string & filename)
 		{
 			aiVector3D position = mesh->mVertices[v];
 			aiVector3D normal = mesh->mNormals[v];
-			//aiVector3D texCoords = mesh->mTextureCoords[v];
+
 			Vertex ourV;
 			ourV.position = vec3(position.x, position.y, position.z);
 			ourV.normal = vec3(normal.x, normal.y, normal.z);
+
 			verts.push_back(ourV);
 		}
 

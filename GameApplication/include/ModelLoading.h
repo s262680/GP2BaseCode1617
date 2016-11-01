@@ -4,7 +4,7 @@
 #include "Common.h"
 #include "GameObject.h"
 
-shared_ptr<GameObject> loadModelFromFile(const string& filename);
+GameObject * loadModelFromFile(const string& filename);
 
 
 #endif

@@ -20,8 +20,8 @@ void MyGame::initScene()
 	string modelPath = ASSET_PATH + MODEL_PATH + "/utah-teapot.fbx";
 	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightVS.glsl";
 	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightFS.glsl";
-	m_TestGO=loadModelFromFile(modelPath);
-	m_TestGO->loadShadersFromFile(vsFilename, fsFilename);
+	m_TestGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
+	m_TestGO->loadShaders(vsFilename, fsFilename);
 
 	m_TestGO->setScale(vec3(0.5f, 0.5f, 0.5f));
 
