@@ -15,6 +15,11 @@
 #include <chrono>
 #include <ctime>
 #include <cstdarg>
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+
 
 //Name space std, so we don't need to do std::vector
 using namespace std;
@@ -28,6 +33,8 @@ using namespace std;
 #define GLM_FORCE_RADIANS
 //maths headers
 #include <glm/glm.hpp>
+
+
 using namespace glm;
 
 #include <glm/ext.hpp>
