@@ -11,7 +11,7 @@ GameObject::GameObject()
 
 	m_Position = vec3(0.0f, 0.0f, 0.0f);
 	m_Rotation = vec3(0.0f, 0.0f, 0.0f);
-	m_Scale = vec3(1.0f, 1.0f, 1.0f);
+	m_Scale = vec3(0.5f, 0.5f, 0.5f);
 
 	m_ModelMatrix = mat4(1.0f);
 	m_TranslationMatrix = mat4(1.0f);
@@ -139,6 +139,12 @@ void GameObject::copyVertexData(Vertex *pVerts, int numberOfvertcies, int * indi
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(void**)offsetof(Vertex, texCoord));
 
+}
+
+void GameObject::setPositionNScale(vec3 pos, vec3 scale)
+{
+	m_Position = pos;
+	m_Scale = scale;
 }
 
 /*
