@@ -58,6 +58,7 @@ public:
 
 	void loadDiffuseTexture(const string& filename);
 	void loadSpecularTexture(const string& filename);
+	void loadNormalTexture(const string& filename);
 	void loadShaders(const string& vsFilename, const string& fsFilename);
 	void copyVertexData(Vertex *pVertex, int numberOfVertices, int *pIndices, int numberOfIndices);
 
@@ -108,6 +109,7 @@ private:
 	GLuint m_ShaderProgram;
 	GLuint m_DiffuseTexture;
 	GLuint m_SpecularTexture;
+	GLuint m_NormalTexture;
 	GLuint m_Sampler;
 
 	//Materials
