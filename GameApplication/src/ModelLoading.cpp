@@ -7,7 +7,7 @@ GameObject * loadModelFromFile(const string & filename)
 	GameObject *gameObject = new GameObject();
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
-	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals);
+	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals| aiProcess_GenUVCoords);
 
 	if (scene)
 	{
@@ -16,6 +16,7 @@ GameObject * loadModelFromFile(const string & filename)
 
 		vector<int> indices;
 		vector<Vertex> verts;
+		int texCoordIndex = 0;
 
 		for (int f = 0; f < mesh->mNumFaces; f++)
 		{
@@ -31,10 +32,23 @@ GameObject * loadModelFromFile(const string & filename)
 		{
 			aiVector3D position = mesh->mVertices[v];
 			aiVector3D normal = mesh->mNormals[v];
-
+			for (int t = 0; t < mesh->GetNumUVChannels(); t++)
+			{
+				if (mesh->HasTextureCoords(t))
+				{
+					texCoordIndex = t;
+				}
+			}
 			Vertex ourV;
 			ourV.position = vec3(position.x, position.y, position.z);
 			ourV.normal = vec3(normal.x, normal.y, normal.z);
+
+			if (mesh->HasTextureCoords(texCoordIndex))
+			{
+				aiVector3D texCoord = mesh->mTextureCoords[texCoordIndex][v];
+				ourV.texCoords0 = vec2(texCoord.x, texCoord.y);
+			}
+
 
 			verts.push_back(ourV);
 		}

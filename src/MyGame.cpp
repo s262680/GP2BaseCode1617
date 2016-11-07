@@ -17,15 +17,18 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
-	string modelPath = ASSET_PATH + MODEL_PATH + "/utah-teapot.fbx";
-	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightVS.glsl";
-	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightFS.glsl";
+	string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
+	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureVS.glsl";
+	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureFS.glsl";
+	string diffuseTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
+	string specularTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_spec.png";
+
 	m_TestGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
 	m_TestGO->loadShaders(vsFilename, fsFilename);
+	m_TestGO->loadDiffuseTexture(diffuseTexturePath);
+	m_TestGO->loadSpecularTexture(specularTexturePath);
 
-	m_TestGO->setScale(vec3(0.5f, 0.5f, 0.5f));
-
-	m_CameraPosition = vec3(0.0f, 0.0f, 100.0f);
+	m_CameraPosition = vec3(0.0f, 0.0f, 10.0f);
 
 	m_Light = shared_ptr<Light>(new Light());
 	m_Light->DiffuseColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
