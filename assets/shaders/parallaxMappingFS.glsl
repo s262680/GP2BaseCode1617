@@ -47,8 +47,8 @@ void main()
 	vec3 halfWayVec = normalize(cameraDirectionOut + lightDir);
 	float specularTerm = pow(dot(bumpNormals, halfWayVec), specularPower);
 
-	vec4 diffuseTextureColour = texture(diffuseSampler, vertexTextureCoordsOut);
-	vec4 specularTextureColour = texture(specularSampler, vertexTextureCoordsOut);
+	vec4 diffuseTextureColour = texture(diffuseSampler, correctedTexCoords);
+	vec4 specularTextureColour = texture(specularSampler, correctedTexCoords);
 
 	vec4 ambientColour = ambientMaterialColour*ambientLightColour;
 	vec4 diffuseColour = diffuseTextureColour*diffuseLightColour*diffuseTerm;

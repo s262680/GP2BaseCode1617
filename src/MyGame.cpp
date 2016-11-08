@@ -19,16 +19,18 @@ void MyGame::initScene()
 {
 	string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
 	string vsFilename = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
-	string fsFilename = ASSET_PATH + SHADER_PATH + "/parrallaxMappingFS.glsl";
+	string fsFilename = ASSET_PATH + SHADER_PATH + "/parallaxMappingFS.glsl";
 	string diffuseTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
 	string specularTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_spec.png";
 	string normalTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_norm.png";
+	string heightTexturePath=ASSET_PATH+TEXTURE_PATH+"/earth_height.png";
 
 	m_TestGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
 	m_TestGO->loadShaders(vsFilename, fsFilename);
 	m_TestGO->loadDiffuseTexture(diffuseTexturePath);
 	m_TestGO->loadSpecularTexture(specularTexturePath);
 	m_TestGO->loadNormalTexture(normalTexturePath);
+	m_TestGO->loadHeightTexture(heightTexturePath);
 
 	m_CameraPosition = vec3(0.0f, 0.0f, 10.0f);
 
