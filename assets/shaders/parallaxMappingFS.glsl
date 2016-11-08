@@ -16,10 +16,10 @@ uniform vec4 ambientLightColour;
 uniform vec4 diffuseLightColour;
 uniform vec4 specularLightColour;
 
-uniform sampler2D diffuseMap;
-uniform sampler2D specMap;
-uniform sampler2D bumpMap;
-uniform sampler2D heightMap;
+uniform sampler2D diffuseSampler;
+uniform sampler2D specularSampler;
+uniform sampler2D normalSampler;
+uniform sampler2D heightSampler;
 
 uniform float bias = 0.03;
 uniform float scale = 0.015;
@@ -27,7 +27,7 @@ uniform float scale = 0.015;
 void main()
 {
 	//retrieve height from texture
-	float height = texture(heightMap, texCoordsOut).r;
+	float height = texture(heightSampler, texCoordsOut).r;
 
 	//use offset limits(scale and bias) to move texture coords
 	vec2 correctedTexCoords = scale*texCoordsOut.xy*height;
@@ -36,18 +36,23 @@ void main()
 	correctedTexCoords=texCoordsOut-correctedTexCoords;
 
 	//get normals from normal map, rescale from 0 to 1 to -1 to 1
-	vec3 bumpNormals = 2.0 * texture(bumpMap, correctedTexCoords).rgb - 1.0;
+	vec3 bumpNormals = 2.0 * texture(normalSampler, correctedTexCoords).rgb - 1.0;
 
 	//normalize!!
 	bumpNormals = normalize(bumpNormals);
 
+	vec3 lightDir = normalize(-lightDirectionOut);
 	//now use bumpnormals in reflectance calculate
-	float diffuseTerm = dot(bumpNormals, lightDirectionOut);
-	vec3 halfWayVec = normalize(cameraDirectionOut + lightDirectionOut);
+	float diffuseTerm = dot(bumpNormals, lightDir);
+	vec3 halfWayVec = normalize(cameraDirectionOut + lightDir);
 	float specularTerm = pow(dot(bumpNormals, halfWayVec), specularPower);
 
-	vec4 diffuseTextureColour = texture(diffuseMap, correctedTexCoords);
-	vec4 specTextureColour = texture(specMap, correctedTexCoords);
+	vec4 diffuseTextureColour = texture(diffuseSampler, vertexTextureCoordsOut);
+	vec4 specularTextureColour = texture(specularSampler, vertexTextureCoordsOut);
 
-	FragColor = (ambientMaterialColour*ambientLightColour) + ((diffuseMaterialColour + diffuseTextureColour)*diffuseLightColour*diffuseTerm) + ((specularMaterialColour + specTextureColour)*specularLightColour*specularTerm);
+	vec4 ambientColour = ambientMaterialColour*ambientLightColour;
+	vec4 diffuseColour = diffuseTextureColour*diffuseLightColour*diffuseTerm;
+	vec4 specularColour = specularTextureColour*specularLightColour*specularTerm;
+
+	FragColor = (ambientColour + diffuseColour + specularColour);
 }

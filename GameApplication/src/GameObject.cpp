@@ -23,6 +23,8 @@ GameObject::GameObject()
 	m_DiffuseTexture =0;
 	m_SpecularTexture = 0;
 	m_NormalTexture = 0;
+	m_HeightTexture = 0;
+
 	m_Sampler=0;
 	m_pParent = nullptr;
 
@@ -83,6 +85,12 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	GLint normalTextureLocation = glGetUniformLocation(m_ShaderProgram, "normalSampler");
 	glUniform1i(normalTextureLocation, 2);
 
+	glBindSampler(3, m_Sampler);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_HeightTexture);
+	GLint heightTextureLocation = glGetUniformLocation(m_ShaderProgram, "heightSampler");
+	glUniform1i(heightTextureLocation, 3);
+
 	GLint ambientLocation = glGetUniformLocation(m_ShaderProgram, "ambientMaterialColour");
 	glUniform4fv(ambientLocation, 1, value_ptr(m_AmbientMaterialColour));
 
@@ -112,6 +120,7 @@ void GameObject::onDestroy()
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteTextures(1, &m_SpecularTexture);
 	glDeleteTextures(1, &m_NormalTexture);
+	glDeleteTextures(1, &m_HeightTexture);
 	glDeleteProgram(m_ShaderProgram);
 }
 
@@ -151,6 +160,13 @@ void GameObject::loadNormalTexture(const string & filename)
 {
 	m_NormalTexture = loadTextureFromFile(filename);
 	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void GameObject::loadHeightTexture(const string & filename)
+{
+	m_HeightTexture = loadTextureFromFile(filename);
+	glBindTexture(GL_TEXTURE_2D, m_HeightTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 

@@ -22,7 +22,7 @@ void main()
 {
 	mat3 tangentMatrix = mat3(normalize(vertexNormal), normalize(vertexTangents), normalize(vertexBinormals));
 
-	vec3 vertexNormalModel = normalize(Model*vec4(vertexNormals, 0.0f)).xyz;
+	vec3 vertexNormalModel = normalize(Model*vec4(vertexNormal, 0.0f)).xyz;
 	vec3 worldPos = (Model*vec4(vertexPosition, 1.0)).xyz;
 	vec3 cameraDir = normalize(cameraPosition - worldPos);
 
