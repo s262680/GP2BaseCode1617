@@ -22,6 +22,11 @@ public:
 	void copyVertexData(Vertex *pVerts, int numberOfvertcies, int * indices, int numberOfIndices);
 	void setPositionNScale(vec3 pos, vec3 scale);
 
+	void setCameraPosition(vec3 &CameraPos)
+	{
+		m_CameraPos = CameraPos;
+	}
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
@@ -45,6 +50,8 @@ private:
 
 	int m_NumberOfVertices;
 	int m_NumberOfIndices;
+
+	vec3 m_CameraPos;
 protected:
 };
 

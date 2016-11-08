@@ -36,6 +36,21 @@ void GameObject::onRender(mat4 & view, mat4 & projection)
 		mat4 MVP = projection*view*m_ModelMatrix;
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 	}
+
+	GLint ModelLocation = glGetUniformLocation(m_ShaderProgram, "Model");
+	if (ModelLocation != -1)
+	{
+		
+		glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(m_ModelMatrix));
+	}
+
+	GLint CameraPosLocation = glGetUniformLocation(m_ShaderProgram, "cameraPos");
+	if (CameraPosLocation != -1)
+	{
+
+		glUniform3fv(CameraPosLocation, 1, glm::value_ptr(m_CameraPos));
+	}
+
 	glBindSampler(0, m_ClampSampler);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
@@ -138,6 +153,10 @@ void GameObject::copyVertexData(Vertex *pVerts, int numberOfvertcies, int * indi
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(void**)offsetof(Vertex, texCoord));
+
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		(void**)offsetof(Vertex, normal ));
 
 }
 

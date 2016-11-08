@@ -5,7 +5,7 @@ out vec4 FragColor;
 in vec3 vertexNormalOut;
 in vec3 cameraDirectionOut;
 
-uniform vec3 lightDirection=vec3(0.0f,0.0f,1.0f);
+uniform vec3 lightDirection=vec3(0.0f,0.0f,-1.0f);
 
 uniform vec4 ambientMaterialColour=vec4(0.5f,0.0f,0.0f,1.0f);
 uniform vec4 diffuseMaterialColour=vec4(0.8f,0.0f,0.0f,1.0f);

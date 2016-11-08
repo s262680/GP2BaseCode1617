@@ -13,6 +13,7 @@ public:
 	void update();
 	void initScene();
 	void destroyScene();
+
 private:
 	GLuint m_VBO;
 	GLuint m_VAO;
@@ -30,5 +31,7 @@ private:
 
 	GameObject * m_TestObject;
 	GameObject * m_TestModelObject;
+
+	vec3 m_CameraPos;
 };
 #endif

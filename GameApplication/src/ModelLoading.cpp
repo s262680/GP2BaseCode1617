@@ -9,6 +9,9 @@ GameObject * loadModelFromFile(const string & filename)
 
 	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
 
+	
+	
+
 	if (scene)
 	{
 		LOG(INFO, "Parsing Model %s", filename.c_str());
@@ -30,8 +33,9 @@ GameObject * loadModelFromFile(const string & filename)
 		for (int v = 0; v < mesh->mNumVertices; v++)
 		{
 			aiVector3D position = mesh->mVertices[v];
+			aiVector3D normal = mesh->mNormals[v];
 			aiColor4D color = aiColor4D(1.0f, 1.0f, 1.0f, 1.0f);
-
+		   
 			if (mesh->mColors[0] != nullptr)
 			{
 				color = mesh->mColors[v][0];
@@ -39,8 +43,9 @@ GameObject * loadModelFromFile(const string & filename)
 
 			Vertex ourV;
 			ourV.position = vec3(position.x, position.y, position.z);
-			ourV.colour = vec4(color.r, color.g, color.b, color.a);
-
+			ourV.colour = vec4(color.r, color.g, color.b, color.a);			
+			ourV.normal = vec3(normal.x, normal.y, normal.z);
+			
 			verts.push_back(ourV);
 		}
 
