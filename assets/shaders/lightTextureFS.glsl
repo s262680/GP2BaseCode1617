@@ -6,13 +6,13 @@ in vec3 vertexNormalOut;
 in vec3 cameraDirectionOut;
 in vec2 vertexTextureCoordsOut;
 
-uniform vec3 lightDirection=vec3(0.0f,0.0f,1.0f);
-uniform vec4 ambientMaterialColour=vec4(0.5f,0.0f,0.0f,1.0f);
-uniform float specularPower=25.0f;
+uniform vec3 lightDirection;
+uniform vec4 ambientMaterialColour;
+uniform float specularPower;
 
-uniform vec4 ambientLightColour=vec4(1.0f,1.0f,1.0f,1.0f);
-uniform vec4 diffuseLightColour=vec4(1.0f,1.0f,1.0f,1.0f);
-uniform vec4 specularLightColour=vec4(1.0f,1.0f,1.0f,1.0f);
+uniform vec4 ambientLightColour;
+uniform vec4 diffuseLightColour;
+uniform vec4 specularLightColour;
 
 uniform sampler2D diffuseSampler;
 uniform sampler2D specularSampler;

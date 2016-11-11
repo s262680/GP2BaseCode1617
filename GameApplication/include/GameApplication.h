@@ -9,6 +9,7 @@
 
 #include "GameObject.h"
 #include "Light.h"
+#include "KeyboardListener.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -41,7 +42,12 @@ public:
 	virtual void initScene();
 	virtual void destroyScene();
 
-	virtual void onKeyDown(SDL_Keycode keyCode);
+	void onKeyDown(SDL_Keycode keyCode);
+	void onKeyUp(SDL_Keycode keyCode);
+	void addKeyboardListner(shared_ptr<IKeyboardListener> listener)
+	{
+		m_KeyboardListners.push_back(listener);
+	};
 
 	void OnBeginRender();
 	void OnEndRender();
@@ -67,5 +73,7 @@ protected:
 	ProgramOptions m_Options;
 
 	void parseConfig(int args,char * arg[]);
+
+	vector<shared_ptr<IKeyboardListener> > m_KeyboardListners;
 };
 #endif

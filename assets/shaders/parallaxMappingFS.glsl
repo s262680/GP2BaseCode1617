@@ -22,7 +22,7 @@ uniform sampler2D normalSampler;
 uniform sampler2D heightSampler;
 
 uniform float bias = 0.03;
-uniform float scale = 0.015;
+uniform float scale = 0.02;
 
 void main()
 {

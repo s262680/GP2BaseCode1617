@@ -1,6 +1,8 @@
 #Cmake find for Asset Import library
 #Original found here https://github.com/assimp/assimp/blob/master/cmake-modules/Findassimp.cmake
 #modified by Brian McDonald on 2/6/16 to work with Mac OS(Assimp installed from MacPorts)
+message("Find ASSIMP")
+
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	set(ASSIMP_ARCHITECTURE "64")
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -46,12 +48,14 @@ else(WIN32)
 
 	find_library(
 	  ASSIMP_LIBRARIES
-	  NAMES libassimp
+	  NAMES libassimp.dylib
 	  PATHS
 		/usr/lib/
 		/opt/local/lib/
 		/usr/local/lib/
 	)
+
+	message("Found asset importer library: ${ASSIMP_LIBRARIES}")
 
 	if (ASSIMP_INCLUDE_DIR AND ASSIMP_LIBRARIES)
 	  SET(assimp_FOUND TRUE)

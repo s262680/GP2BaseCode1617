@@ -30,7 +30,7 @@ GameObject::GameObject()
 
 	m_AmbientMaterialColour=vec4(0.2f,0.2f,0.2f,1.0f);
 	m_DiffuseMaterialColour=vec4(0.5f,0.5f,0.5f,1.0f);
-	m_SpecularMaterialColour=vec4(0.0f,0.0f,0.0f,1.0f);
+	m_SpecularMaterialColour=vec4(1.0f,1.0f,1.0f,1.0f);
 	m_SpecularMaterialPower=25.0f;
 }
 
@@ -57,9 +57,6 @@ void GameObject::onUpdate()
 
 void GameObject::onRender(mat4& view, mat4& projection)
 {
-	glUseProgram(m_ShaderProgram);
-	glBindVertexArray(m_VAO);
-
 	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, "MVP");
 	mat4 MVP = projection*view*m_ModelMatrix;
 	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
@@ -104,6 +101,15 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	glUniform1f(specularPowerLocation, m_SpecularMaterialPower);
 
 	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, NULL);
+
+	//glUseProgram(0);
+	glBindVertexArray(0);
+}
+
+void GameObject::onBeginRender()
+{
+	glUseProgram(m_ShaderProgram);
+	glBindVertexArray(m_VAO);
 }
 
 void GameObject::onInit()
@@ -142,10 +148,10 @@ void GameObject::loadDiffuseTexture(const string & filename)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glGenSamplers(1, &m_Sampler);
-	glSamplerParameteri(m_Sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glSamplerParameteri(m_Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 }
 

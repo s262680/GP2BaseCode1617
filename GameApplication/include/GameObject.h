@@ -88,6 +88,8 @@ public:
 	{
 		m_SpecularMaterialPower = power;
 	};
+
+	void onBeginRender();
 private:
 	GameObject * m_pParent;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;

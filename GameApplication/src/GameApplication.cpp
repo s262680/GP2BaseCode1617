@@ -154,11 +154,24 @@ void GameApplication::destroyScene()
 
 void GameApplication::onKeyDown(SDL_Keycode keyCode)
 {
+  for(auto& listner:m_KeyboardListners)
+  {
+    listner->onKeyDown(keyCode);
+  }
+}
+
+void GameApplication::onKeyUp(SDL_Keycode keyCode)
+{
+  for(auto& listner:m_KeyboardListners)
+  {
+    listner->onKeyUp(keyCode);
+  }
 }
 
 void GameApplication::OnQuit()
 {
 	destroyScene();
+  m_KeyboardListners.clear();
 	//set our boolean which controls the loop to false
 	m_bIsRunning = false;
   SDL_GL_DeleteContext(m_GLcontext);

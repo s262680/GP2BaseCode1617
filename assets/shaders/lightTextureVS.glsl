@@ -12,7 +12,7 @@ out vec3 cameraDirectionOut;
 
 uniform mat4 MVP;
 uniform mat4 Model;
-uniform vec3 cameraPos=vec3(0.0f,0.0f,10.0f);
+uniform vec3 cameraPos;
 
 void main()
 {
