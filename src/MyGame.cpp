@@ -17,11 +17,13 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
-	string modelPath = ASSET_PATH + MODEL_PATH + "/utah-teapot.fbx";
-	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightVS.glsl";
-	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightFS.glsl";
+	string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
+	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureVS.glsl";
+	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureFS.glsl";
+	string texturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
 	m_TestGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
 	m_TestGO->loadShaders(vsFilename, fsFilename);
+	m_TestGO->loadDiffuseTexture(texturePath);
 
 	m_TestGO->setScale(vec3(0.5f, 0.5f, 0.5f));
 

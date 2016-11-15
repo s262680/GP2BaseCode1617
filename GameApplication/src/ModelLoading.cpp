@@ -31,12 +31,23 @@ GameObject * loadModelFromFile(const string & filename)
 		{
 			aiVector3D position = mesh->mVertices[v];
 			aiVector3D normal = mesh->mNormals[v];
+			aiVector3D textCord = aiVector3D(0, 0, 0);
+
+			for (int c = 0; c < mesh->GetNumUVChannels; c++)
+			{
+				if (mesh->HasTextureCoords[c])
+				{
+					textCord = mesh->mTextureCoords[c][0];
+				}
+			}
 
 			Vertex ourV;
 			ourV.position = vec3(position.x, position.y, position.z);
 			ourV.normal = vec3(normal.x, normal.y, normal.z);
-
+			ourV.texCoords0 = vec2(textCord.x, textCord.y);
 			verts.push_back(ourV);
+
+		
 		}
 
 

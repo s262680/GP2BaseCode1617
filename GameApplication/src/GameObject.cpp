@@ -20,7 +20,7 @@ GameObject::GameObject()
 
 	//Shader Program
 	m_ShaderProgram=0;
-	m_Texture=0;
+	m_DiffuseTexture=0;
 	m_Sampler=0;
 	m_pParent = nullptr;
 
@@ -68,7 +68,7 @@ void GameObject::onRender(mat4& view, mat4& projection)
 
 	glBindSampler(0, m_Sampler);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
+	glBindTexture(GL_TEXTURE_2D, m_DiffuseTexture);
 	GLint textureLocation = glGetUniformLocation(m_ShaderProgram, "diffuseSampler");
 	glUniform1i(textureLocation, 0);
 
@@ -98,7 +98,7 @@ void GameObject::onDestroy()
 	glDeleteBuffers(1, &m_EBO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteSamplers(1, &m_Sampler);
-	glDeleteTextures(1, &m_Texture);
+	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteProgram(m_ShaderProgram);
 }
 
@@ -113,10 +113,10 @@ void GameObject::rotate(const vec3 & delta)
 	m_Rotation += delta;
 }
 
-void GameObject::loadTexture(const string & filename)
+void GameObject::loadDiffuseTexture(const string & filename)
 {
-	m_Texture = loadTextureFromFile(filename);
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
+	m_DiffuseTexture = loadTextureFromFile(filename);
+	glBindTexture(GL_TEXTURE_2D, m_DiffuseTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glGenSamplers(1, &m_Sampler);
