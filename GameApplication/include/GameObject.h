@@ -57,6 +57,7 @@ public:
 	void rotate(const vec3& delta);
 
 	void loadDiffuseTexture(const string& filename);
+	void loadSpecularTexture(const string& filename);
 	void loadShaders(const string& vsFilename, const string& fsFilename);
 	void copyVertexData(Vertex *pVertex, int numberOfVertices, int *pIndices, int numberOfIndices);
 
@@ -106,6 +107,7 @@ private:
 	//Shader Program
 	GLuint m_ShaderProgram;
 	GLuint m_DiffuseTexture;
+	GLuint m_SpecularTexture;
 	GLuint m_Sampler;
 
 	//Materials

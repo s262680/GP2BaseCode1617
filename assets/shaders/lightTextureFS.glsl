@@ -1,7 +1,7 @@
 #version 410
 
 out vec4 FragColor;
-out vec4 TextureReturn;
+
 
 in vec3 vertexNormalOut;
 in vec3 cameraDirectionOut;
@@ -19,6 +19,7 @@ uniform vec4 diffuseLightColour=vec4(1.0f,1.0f,1.0f,1.0f);
 uniform vec4 specularLightColour=vec4(1.0f,1.0f,1.0f,1.0f);
 
 uniform sampler2D diffuseSampler;
+uniform sampler2D specularSampler;
 
 void main()
 {
@@ -27,8 +28,9 @@ void main()
 	vec3 halfWayVec = normalize(cameraDirectionOut + lightDir);
 	float specularTerm = pow(dot(vertexNormalOut, halfWayVec), specularPower);
 
-	TextureReturn = texture(diffuseSampler,vertexTextureCoordsOut);
-	FragColor = (ambientMaterialColour*ambientLightColour) + (TextureReturn*diffuseLightColour*diffuseTerm) + (specularMaterialColour*specularLightColour*specularTerm);
+	vec4 diffuseTextureColor = texture(diffuseSampler,vertexTextureCoordsOut);
+	vec4 specularTextureColor = texture(specularSampler,vertexTextureCoordsOut);
+	FragColor = (ambientMaterialColour*ambientLightColour) + (diffuseTextureColor*diffuseLightColour*diffuseTerm) + (specularTextureColor*specularLightColour*specularTerm);
 	
 
 }

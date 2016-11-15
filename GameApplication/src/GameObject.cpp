@@ -21,6 +21,7 @@ GameObject::GameObject()
 	//Shader Program
 	m_ShaderProgram=0;
 	m_DiffuseTexture=0;
+	m_SpecularTexture = 0;
 	m_Sampler=0;
 	m_pParent = nullptr;
 
@@ -66,11 +67,20 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	GLint ModelLocation = glGetUniformLocation(m_ShaderProgram, "Model");
 	glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(m_ModelMatrix));
 
+
+	//diffuse texture
 	glBindSampler(0, m_Sampler);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_DiffuseTexture);
 	GLint textureLocation = glGetUniformLocation(m_ShaderProgram, "diffuseSampler");
 	glUniform1i(textureLocation, 0);
+
+	//Specular texture
+	glBindSampler(1, m_Sampler);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_SpecularTexture);
+	//GLint specularTextureLocation = glGetUniformLocation(m_ShaderProgram, "specularSampler");
+	//glUniform1i(specularTextureLocation, 1);
 
 	GLint ambientLocation = glGetUniformLocation(m_ShaderProgram, "ambientMaterialColour");
 	glUniform4fv(ambientLocation, 1, value_ptr(m_AmbientMaterialColour));
@@ -98,6 +108,7 @@ void GameObject::onDestroy()
 	glDeleteBuffers(1, &m_EBO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteSamplers(1, &m_Sampler);
+	glDeleteTextures(1, &m_SpecularTexture);
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteProgram(m_ShaderProgram);
 }
@@ -119,12 +130,21 @@ void GameObject::loadDiffuseTexture(const string & filename)
 	glBindTexture(GL_TEXTURE_2D, m_DiffuseTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
+	//not needed for spec
 	glGenSamplers(1, &m_Sampler);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glSamplerParameteri(m_Sampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
 
+}
+
+void GameObject::loadSpecularTexture(const string & filename)
+{
+	m_SpecularTexture = loadTextureFromFile(filename);
+	glBindTexture(GL_TEXTURE_2D, m_SpecularTexture);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void GameObject::loadShaders(const string & vsFilename, const string & fsFilename)

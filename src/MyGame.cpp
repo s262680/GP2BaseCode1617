@@ -20,12 +20,15 @@ void MyGame::initScene()
 	string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
 	string vsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureVS.glsl";
 	string fsFilename = ASSET_PATH + SHADER_PATH + "/lightTextureFS.glsl";
-	string texturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
+	string diffuseTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_diff.png";
+	string specularTexturePath = ASSET_PATH + TEXTURE_PATH + "/earth_spec.png";
+
 	m_TestGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
 	m_TestGO->loadShaders(vsFilename, fsFilename);
-	m_TestGO->loadDiffuseTexture(texturePath);
+	m_TestGO->loadDiffuseTexture(diffuseTexturePath);
+	m_TestGO->loadSpecularTexture(specularTexturePath);
 
-	m_TestGO->setScale(vec3(0.5f, 0.5f, 0.5f));
+	m_TestGO->setScale(vec3(5.0f, 5.0f, 5.0f));
 
 	m_CameraPosition = vec3(0.0f, 0.0f, 100.0f);
 
