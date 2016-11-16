@@ -96,8 +96,9 @@ void MyGame::render()
 	GameApplication::render();
 	for(auto& go:m_GameObjectList)
 	{
-		GLuint currentShader = go->getShaderProgram();
-		go->onBeginRender();
+        go->onBeginRender();
+				GLuint currentShader = go->getShaderProgram();
+
 
 		GLint ambientLightColourLocation = glGetUniformLocation(currentShader, "ambientLightColour");
 		glUniform4fv(ambientLightColourLocation, 1, value_ptr(m_AmbientLightColour));

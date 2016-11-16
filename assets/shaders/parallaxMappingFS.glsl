@@ -30,7 +30,7 @@ void main()
 	float height = texture(heightSampler, texCoordsOut).r;
 
 	//use offset limits(scale and bias) to move texture coords
-	vec2 correctedTexCoords = scale*texCoordsOut.xy*height;
+	vec2 correctedTexCoords = scale*texCoordsOut.xy*height-bias;
 
 	//Calculate new texture coords, we use these instead of normal texture coords
 	correctedTexCoords=texCoordsOut-correctedTexCoords;
