@@ -29,6 +29,9 @@ GameObject::GameObject()
 	m_DiffuseMaterialColour=vec4(0.5f,0.5f,0.5f,1.0f);
 	m_SpecularMaterialColour=vec4(1.0f,1.0f,1.0f,1.0f);
 	m_SpecularMaterialPower=25.0f;
+
+	m_Tangent = vec3(0.0f, 0.0f, 0.0f);
+	m_Binormal = vec3(0.0f, 0.0f, 0.0f);
 }
 
 GameObject::~GameObject()
@@ -79,8 +82,15 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	glBindSampler(1, m_Sampler);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_SpecularTexture);
-	//GLint specularTextureLocation = glGetUniformLocation(m_ShaderProgram, "specularSampler");
-	//glUniform1i(specularTextureLocation, 1);
+	GLint specularTextureLocation = glGetUniformLocation(m_ShaderProgram, "normalSampler");
+	glUniform1i(specularTextureLocation, 1);
+
+	//Normal texture
+	glBindSampler(2, m_Sampler);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
+	GLint normalTextureLocation = glGetUniformLocation(m_ShaderProgram, "specularSampler");
+	glUniform1i(normalTextureLocation, 2);
 
 	GLint ambientLocation = glGetUniformLocation(m_ShaderProgram, "ambientMaterialColour");
 	glUniform4fv(ambientLocation, 1, value_ptr(m_AmbientMaterialColour));
@@ -91,7 +101,7 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	GLint specularLocation = glGetUniformLocation(m_ShaderProgram, "specularMaterialColour");
 	glUniform4fv(specularLocation, 1, value_ptr(m_SpecularMaterialColour));
 
-	GLint specularPowerLocation = glGetUniformLocation(m_ShaderProgram, "specularPower");
+	GLint specularPowerLocation = glGetUniformLocation(m_ShaderProgram, "directionLight.specularPower");
 	glUniform1f(specularPowerLocation, m_SpecularMaterialPower);
 
 	glDrawElements(GL_TRIANGLES, m_NumberOfIndices, GL_UNSIGNED_INT, NULL);
@@ -147,6 +157,13 @@ void GameObject::loadSpecularTexture(const string & filename)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+void GameObject::loadNormalTexture(const string & filename)
+{
+	m_NormalTexture = loadTextureFromFile(filename);
+	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
 void GameObject::loadShaders(const string & vsFilename, const string & fsFilename)
 {
 	GLuint vertexShaderProgram = loadShaderFromFile(vsFilename, VERTEX_SHADER);
@@ -195,3 +212,5 @@ void GameObject::copyVertexData(Vertex * pVertex, int numberOfVertices, int * pI
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(void**)(offsetof(Vertex, normal)));
 }
+
+

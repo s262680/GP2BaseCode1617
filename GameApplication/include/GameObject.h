@@ -85,6 +85,9 @@ public:
 	{
 		m_SpecularMaterialPower = power;
 	};
+
+	void loadNormalTexture(const string& filename);
+
 private:
 	GameObject * m_pParent;
 	vector<shared_ptr<GameObject> > m_ChildrenGameObjects;
@@ -115,6 +118,11 @@ private:
 	vec4 m_DiffuseMaterialColour;
 	vec4 m_SpecularMaterialColour;
 	float m_SpecularMaterialPower;
+
+	vec3 m_Tangent;
+	vec3 m_Binormal;
+
+	GLuint m_NormalTexture;
 };
 
 #endif

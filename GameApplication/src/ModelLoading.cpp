@@ -7,7 +7,7 @@ GameObject * loadModelFromFile(const string & filename)
 	GameObject *gameObject = new GameObject();
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
-	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals);
+	const aiScene* scene = aiImportFile(filename.c_str(), aiProcess_JoinIdenticalVertices|aiProcess_Triangulate | aiProcess_FlipUVs|aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
 	if (scene)
 	{
@@ -32,6 +32,9 @@ GameObject * loadModelFromFile(const string & filename)
 			aiVector3D position = mesh->mVertices[v];
 			aiVector3D normal = mesh->mNormals[v];
 			aiVector3D textCord = aiVector3D(0, 0, 0);
+			aiVector3D tangent= aiVector3D(0, 0, 0);
+			aiVector3D binormal = aiVector3D(0, 0, 0);
+
 
 			for (int c = 0; c < mesh->GetNumUVChannels(); c++)
 			{
@@ -41,9 +44,18 @@ GameObject * loadModelFromFile(const string & filename)
 				}
 			}
 
+
+			if (mesh->HasTangentsAndBitangents())
+			{
+				tangent = mesh->mTangents[v];
+				binormal = mesh->mBitangents[v];
+			}
+
 			Vertex ourV;
 			ourV.position = vec3(position.x, position.y, position.z);
 			ourV.normal = vec3(normal.x, normal.y, normal.z);
+			ourV.tangent = vec3(tangent.x, tangent.y, tangent.z);
+			ourV.binormal = vec3(binormal.x, binormal.y, binormal.z);
 			ourV.texCoords0 = vec2(textCord.x, textCord.y);
 			verts.push_back(ourV);
 
