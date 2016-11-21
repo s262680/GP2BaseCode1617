@@ -243,12 +243,12 @@ void GameApplication::OnBeginRender()
   glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
   //clear the colour and depth buffer
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  
+
 }
 
 void GameApplication::OnEndRender()
 {
-	
+
   SDL_GL_SwapWindow(m_pWindow);
 }
 
@@ -289,6 +289,8 @@ void GameApplication::render()
 	glUniform1i(textureLocation, 0);
 
 	m_ScreenAlignedQuad->render();
+
+  //Do above again but with out the object for loop
 
 }
 
