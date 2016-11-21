@@ -1,6 +1,6 @@
-#include "PostProcessElement.h"
+#include "PostProcessBuffer.h"
 
-PostProcessElement::PostProcessElement()
+PostProcessBuffer::PostProcessBuffer()
 {
   m_Texture=0;
   m_Sampler=0;
@@ -8,12 +8,12 @@ PostProcessElement::PostProcessElement()
   m_Framebuffer=0;
 }
 
-PostProcessElement::~PostProcessElement()
+PostProcessBuffer::~PostProcessBuffer()
 {
 
 }
 
-bool PostProcessElement::create(unsigned int width, unsigned int height)
+bool PostProcessBuffer::create(unsigned int width, unsigned int height)
 {
   glGenSamplers(1, &m_Sampler);
   glSamplerParameteri(m_Sampler, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -46,7 +46,7 @@ bool PostProcessElement::create(unsigned int width, unsigned int height)
   return true;
 }
 
-void PostProcessElement::destroy()
+void PostProcessBuffer::destroy()
 {
   glDeleteFramebuffers(1,&m_Framebuffer);
   glDeleteRenderbuffers(1,&m_DepthBuffer);
@@ -54,12 +54,16 @@ void PostProcessElement::destroy()
   glDeleteSamplers(1,&m_Sampler);
 }
 
-void PostProcessElement::bind()
+void PostProcessBuffer::bind()
 {
   glBindFramebuffer(GL_FRAMEBUFFER,m_Framebuffer);
+  //Set the clear colour(background)
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  //clear the colour and depth buffer
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void PostProcessElement::unbind()
+void PostProcessBuffer::unbind()
 {
   glBindFramebuffer(GL_FRAMEBUFFER,0);
 }

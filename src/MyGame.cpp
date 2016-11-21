@@ -17,6 +17,8 @@ MyGame::~MyGame()
 
 void MyGame::initScene()
 {
+	GameApplication::initScene();
+
 	string modelPath = ASSET_PATH + MODEL_PATH + "/Earth.fbx";
 
 	string vsParallaxFilename = ASSET_PATH + SHADER_PATH + "/parallaxMappingVS.glsl";
@@ -38,7 +40,7 @@ void MyGame::initScene()
 	testGO->loadNormalTexture(normalTexturePath);
 	testGO->loadHeightTexture(heightTexturePath);
 	testGO->setPosition(vec3(6.0f,0.0f,0.0f));
-	m_GameObjectList.push_back(testGO);
+	addGameObject(testGO);
 	addKeyboardListner(shared_ptr<IKeyboardListener>(new DemoKeyListener(testGO.get())));
 
 	testGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
@@ -47,7 +49,7 @@ void MyGame::initScene()
 	testGO->loadSpecularTexture(specularTexturePath);
 	testGO->loadNormalTexture(normalTexturePath);
 	testGO->setPosition(vec3(0.0f,0.0f,0.0f));
-	m_GameObjectList.push_back(testGO);
+	addGameObject(testGO);
 	addKeyboardListner(shared_ptr<IKeyboardListener>(new DemoKeyListener(testGO.get())));
 
 	testGO=shared_ptr<GameObject>(loadModelFromFile(modelPath));
@@ -55,66 +57,6 @@ void MyGame::initScene()
 	testGO->loadDiffuseTexture(diffuseTexturePath);
 	testGO->loadSpecularTexture(specularTexturePath);
 	testGO->setPosition(vec3(-6.0f,0.0f,0.0f));
-	m_GameObjectList.push_back(testGO);
+	addGameObject(testGO);
 	addKeyboardListner(shared_ptr<IKeyboardListener>(new DemoKeyListener(testGO.get())));
-
-	m_CameraPosition = vec3(0.0f, 0.0f, 20.0f);
-
-	m_Light = shared_ptr<Light>(new Light());
-	m_Light->DiffuseColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->Direction = vec3(0.0f, 0.0f, -1.0f);
-	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-
-}
-
-void MyGame::destroyScene()
-{
-	for (auto& go:m_GameObjectList)
-	{
-		go->onDestroy();
-	}
-
-	m_GameObjectList.clear();
-}
-
-void MyGame::update()
-{
-	GameApplication::update();
-
-	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 1000.0f);
-	m_ViewMatrix = lookAt(m_CameraPosition, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-	for (auto& go:m_GameObjectList)
-	{
-		go->onUpdate();
-	}
-}
-
-void MyGame::render()
-{
-	GameApplication::render();
-	for(auto& go:m_GameObjectList)
-	{
-        go->onBeginRender();
-				GLuint currentShader = go->getShaderProgram();
-
-
-		GLint ambientLightColourLocation = glGetUniformLocation(currentShader, "ambientLightColour");
-		glUniform4fv(ambientLightColourLocation, 1, value_ptr(m_AmbientLightColour));
-
-		GLint diffuseLightColourLocation = glGetUniformLocation(currentShader, "diffuseLightColour");
-		glUniform4fv(diffuseLightColourLocation, 1, value_ptr(m_Light->DiffuseColour));
-
-		GLint specularLightColourLocation = glGetUniformLocation(currentShader, "specularLightColour");
-		glUniform4fv(specularLightColourLocation, 1, value_ptr(m_Light->SpecularColour));
-
-		GLint lightDirectionLocation = glGetUniformLocation(currentShader, "lightDirection");
-		glUniform3fv(lightDirectionLocation, 1, value_ptr(m_Light->Direction));
-
-		GLint cameraPositionLocation = glGetUniformLocation(currentShader, "cameraPos");
-		glUniform3fv(cameraPositionLocation, 1, value_ptr(m_CameraPosition));
-
-		go->onRender(m_ViewMatrix, m_ProjMatrix);
-	}
 }

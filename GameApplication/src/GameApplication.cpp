@@ -144,12 +144,40 @@ bool GameApplication::init(int args,char * arg[])
 
 void GameApplication::initScene()
 {
+	m_CameraPosition = vec3(0.0f, 0.0f, 20.0f);
 
+	m_Light = shared_ptr<Light>(new Light());
+	m_Light->DiffuseColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->Direction = vec3(0.0f, 0.0f, -1.0f);
+	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	m_PostBuffer = shared_ptr<PostProcessBuffer>(new PostProcessBuffer());
+	m_PostBuffer->create(m_WindowWidth, m_WindowHeight);
+
+	m_ScreenAlignedQuad = shared_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad());
+	m_ScreenAlignedQuad->create();
+
+	const std::string ASSET_PATH = "assets";
+	const std::string SHADER_PATH = "/shaders";
+	string fsPostFilename = ASSET_PATH + SHADER_PATH + "/colourFilterFS.glsl";
+
+	m_PostEffect = shared_ptr<PostProcessingEffect>(new PostProcessingEffect());
+	m_PostEffect->loadShader(fsPostFilename);
 }
 
 void GameApplication::destroyScene()
 {
+	m_PostEffect->destroy();
+	m_ScreenAlignedQuad->destroy();
+	m_PostBuffer->destroy();
 
+	for (auto& go : m_GameObjectList)
+	{
+		go->onDestroy();
+	}
+
+	m_GameObjectList.clear();
 }
 
 void GameApplication::onKeyDown(SDL_Keycode keyCode)
@@ -200,7 +228,13 @@ void GameApplication::OnRestored()
 
 void GameApplication::update()
 {
+	m_ProjMatrix = perspective(radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 1000.0f);
+	m_ViewMatrix = lookAt(m_CameraPosition, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
+	for (auto& go : m_GameObjectList)
+	{
+		go->onUpdate();
+	}
 }
 
 void GameApplication::OnBeginRender()
@@ -209,15 +243,52 @@ void GameApplication::OnBeginRender()
   glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
   //clear the colour and depth buffer
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  
 }
 
 void GameApplication::OnEndRender()
 {
+	
   SDL_GL_SwapWindow(m_pWindow);
 }
 
 void GameApplication::render()
 {
+	m_PostBuffer->bind();
+	for (auto& go : m_GameObjectList)
+	{
+		go->onBeginRender();
+		GLuint currentShader = go->getShaderProgram();
+
+
+		GLint ambientLightColourLocation = glGetUniformLocation(currentShader, "ambientLightColour");
+		glUniform4fv(ambientLightColourLocation, 1, value_ptr(m_AmbientLightColour));
+
+		GLint diffuseLightColourLocation = glGetUniformLocation(currentShader, "diffuseLightColour");
+		glUniform4fv(diffuseLightColourLocation, 1, value_ptr(m_Light->DiffuseColour));
+
+		GLint specularLightColourLocation = glGetUniformLocation(currentShader, "specularLightColour");
+		glUniform4fv(specularLightColourLocation, 1, value_ptr(m_Light->SpecularColour));
+
+		GLint lightDirectionLocation = glGetUniformLocation(currentShader, "lightDirection");
+		glUniform3fv(lightDirectionLocation, 1, value_ptr(m_Light->Direction));
+
+		GLint cameraPositionLocation = glGetUniformLocation(currentShader, "cameraPos");
+		glUniform3fv(cameraPositionLocation, 1, value_ptr(m_CameraPosition));
+
+		go->onRender(m_ViewMatrix, m_ProjMatrix);
+	}
+	m_PostBuffer->unbind();
+
+	m_PostEffect->bind();
+	GLuint currentShader = m_PostEffect->getShaderProgram();
+
+	GLint textureLocation = glGetUniformLocation(currentShader, "texture0");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_PostBuffer->GetTexture());
+	glUniform1i(textureLocation, 0);
+
+	m_ScreenAlignedQuad->render();
 
 }
 

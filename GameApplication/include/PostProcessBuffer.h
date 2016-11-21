@@ -1,13 +1,13 @@
-#ifndef POSTPROCESSELEMENT_H
-#define POSTPROCESSELEMENT_H
+#ifndef POSTPROCESSBUFFER_H
+#define POSTPROCESSBUFFER_H
 
 #include "Common.h"
 
-class PostProcessElement
+class PostProcessBuffer
 {
 public:
-  PostProcessElement();
-  ~PostProcessElement();
+  PostProcessBuffer();
+  ~PostProcessBuffer();
 
   bool create(unsigned int width, unsigned int height);
   void destroy();

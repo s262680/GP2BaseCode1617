@@ -10,6 +10,9 @@
 #include "GameObject.h"
 #include "Light.h"
 #include "KeyboardListener.h"
+#include "PostProcessBuffer.h"
+#include "PostProcessingEffect.h"
+#include "ScreenAlignedQuad.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -49,6 +52,11 @@ public:
 		m_KeyboardListners.push_back(listener);
 	};
 
+	void addGameObject(shared_ptr<GameObject> pObj)
+	{
+		m_GameObjectList.push_back(pObj);
+	};
+
 	void OnBeginRender();
 	void OnEndRender();
 	void setViewport( int width, int height );
@@ -75,5 +83,20 @@ protected:
 	void parseConfig(int args,char * arg[]);
 
 	vector<shared_ptr<IKeyboardListener> > m_KeyboardListners;
+	vector<shared_ptr<GameObject> > m_GameObjectList;
+
+	//matrices
+	mat4 m_ViewMatrix;
+	mat4 m_ProjMatrix;
+
+	shared_ptr<Light> m_Light;
+	vec4 m_AmbientLightColour;
+
+	vec3 m_CameraPosition;
+
+	//Post Processing
+	shared_ptr<PostProcessBuffer> m_PostBuffer;
+	shared_ptr<ScreenAlignedQuad> m_ScreenAlignedQuad;
+	shared_ptr<PostProcessingEffect> m_PostEffect;
 };
 #endif
