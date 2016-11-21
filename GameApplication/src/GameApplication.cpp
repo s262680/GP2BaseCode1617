@@ -152,25 +152,20 @@ void GameApplication::initScene()
 	m_Light->Direction = vec3(0.0f, 0.0f, -1.0f);
 	m_AmbientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_PostBuffer = shared_ptr<PostProcessBuffer>(new PostProcessBuffer());
-	m_PostBuffer->create(m_WindowWidth, m_WindowHeight);
-
-	m_ScreenAlignedQuad = shared_ptr<ScreenAlignedQuad>(new ScreenAlignedQuad());
-	m_ScreenAlignedQuad->create();
-
-	const std::string ASSET_PATH = "assets";
-	const std::string SHADER_PATH = "/shaders";
-	string fsPostFilename = ASSET_PATH + SHADER_PATH + "/colourFilterFS.glsl";
-
-	m_PostEffect = shared_ptr<PostProcessingEffect>(new PostProcessingEffect());
-	m_PostEffect->loadShader(fsPostFilename);
+  const std::string ASSET_PATH = "assets";
+  const std::string SHADER_PATH = "/shaders";
+  string fsPostFilename = ASSET_PATH + SHADER_PATH + "/simplePostProcessFS.glsl";
+  m_PassThroughPostProcess=unique_ptr<PostProcess>(new PostProcess());
+  m_PassThroughPostProcess->create(m_WindowWidth,m_WindowHeight,fsPostFilename);
 }
 
 void GameApplication::destroyScene()
 {
-	m_PostEffect->destroy();
-	m_ScreenAlignedQuad->destroy();
-	m_PostBuffer->destroy();
+  m_PassThroughPostProcess->destroy();
+  for (auto& post:m_PostProcessChain)
+  {
+    post->destroy();
+  }
 
 	for (auto& go : m_GameObjectList)
 	{
@@ -254,7 +249,7 @@ void GameApplication::OnEndRender()
 
 void GameApplication::render()
 {
-	m_PostBuffer->bind();
+	m_PassThroughPostProcess->getBuffer()->bind();
 	for (auto& go : m_GameObjectList)
 	{
 		go->onBeginRender();
@@ -278,17 +273,32 @@ void GameApplication::render()
 
 		go->onRender(m_ViewMatrix, m_ProjMatrix);
 	}
-	m_PostBuffer->unbind();
+	m_PassThroughPostProcess->getBuffer()->unbind();
 
-	m_PostEffect->bind();
-	GLuint currentShader = m_PostEffect->getShaderProgram();
+	m_PassThroughPostProcess->getEffect()->bind();
+	GLuint currentShader = m_PassThroughPostProcess->getEffect()->getShaderProgram();
 
 	GLint textureLocation = glGetUniformLocation(currentShader, "texture0");
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_PostBuffer->GetTexture());
+	glBindTexture(GL_TEXTURE_2D, m_PassThroughPostProcess->getBuffer()->GetTexture());
 	glUniform1i(textureLocation, 0);
 
-	m_ScreenAlignedQuad->render();
+	m_PassThroughPostProcess->getQuad()->render();
+  m_PassThroughPostProcess->getBuffer()->unbind();
+  for(auto& post:m_PostProcessChain)
+  {
+    post->getBuffer()->bind();
+    post->getEffect()->bind();
+    GLuint currentShader = post->getEffect()->getShaderProgram();
+
+    GLint textureLocation = glGetUniformLocation(currentShader, "texture0");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, post->getBuffer()->GetTexture());
+    glUniform1i(textureLocation, 0);
+
+    post->getQuad()->render();
+    post->getBuffer()->unbind();
+  }
 
   //Do above again but with out the object for loop
 

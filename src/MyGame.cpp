@@ -59,4 +59,9 @@ void MyGame::initScene()
 	testGO->setPosition(vec3(-6.0f,0.0f,0.0f));
 	addGameObject(testGO);
 	addKeyboardListner(shared_ptr<IKeyboardListener>(new DemoKeyListener(testGO.get())));
+
+	shared_ptr<PostProcess> post=shared_ptr<PostProcess>(new PostProcess());
+	string fsPostColourCorrectionFilename=ASSET_PATH+SHADER_PATH+"/colourFilterFS.glsl";
+	post->create(m_WindowWidth,m_WindowHeight,fsPostColourCorrectionFilename);
+	addPostProcessingEffect(post);
 }

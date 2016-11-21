@@ -10,9 +10,7 @@
 #include "GameObject.h"
 #include "Light.h"
 #include "KeyboardListener.h"
-#include "PostProcessBuffer.h"
-#include "PostProcessingEffect.h"
-#include "ScreenAlignedQuad.h"
+#include "PostProcess.h"
 
 //Game Application class, this basically wraps up the initialisation of a game
 //this will be the base class of any game we are making. You should override this
@@ -57,6 +55,11 @@ public:
 		m_GameObjectList.push_back(pObj);
 	};
 
+	void addPostProcessingEffect(shared_ptr<PostProcess> post)
+	{
+		m_PostProcessChain.push_back(post);
+	};
+
 	void OnBeginRender();
 	void OnEndRender();
 	void setViewport( int width, int height );
@@ -95,8 +98,8 @@ protected:
 	vec3 m_CameraPosition;
 
 	//Post Processing
-	shared_ptr<PostProcessBuffer> m_PostBuffer;
-	shared_ptr<ScreenAlignedQuad> m_ScreenAlignedQuad;
-	shared_ptr<PostProcessingEffect> m_PostEffect;
+	unique_ptr<PostProcess> m_PassThroughPostProcess;
+	vector<shared_ptr<PostProcess> > m_PostProcessChain;
 };
+
 #endif
