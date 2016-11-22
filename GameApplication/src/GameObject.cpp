@@ -82,15 +82,22 @@ void GameObject::onRender(mat4& view, mat4& projection)
 	glBindSampler(1, m_Sampler);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_SpecularTexture);
-	GLint specularTextureLocation = glGetUniformLocation(m_ShaderProgram, "normalSampler");
+	GLint specularTextureLocation = glGetUniformLocation(m_ShaderProgram, "specularSampler");
 	glUniform1i(specularTextureLocation, 1);
 
 	//Normal texture
 	glBindSampler(2, m_Sampler);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
-	GLint normalTextureLocation = glGetUniformLocation(m_ShaderProgram, "specularSampler");
+	GLint normalTextureLocation = glGetUniformLocation(m_ShaderProgram, "normalSampler");
 	glUniform1i(normalTextureLocation, 2);
+
+	//Height texture
+	glBindSampler(3, m_Sampler);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_HeightTexture);
+	GLint heightTextureLocation = glGetUniformLocation(m_ShaderProgram, "heightMap");
+	glUniform1i(heightTextureLocation, 3);
 
 	GLint ambientLocation = glGetUniformLocation(m_ShaderProgram, "ambientMaterialColour");
 	glUniform4fv(ambientLocation, 1, value_ptr(m_AmbientMaterialColour));
@@ -118,6 +125,8 @@ void GameObject::onDestroy()
 	glDeleteBuffers(1, &m_EBO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteSamplers(1, &m_Sampler);
+	glDeleteTextures(1, &m_HeightTexture);
+	glDeleteTextures(1, &m_NormalTexture);
 	glDeleteTextures(1, &m_SpecularTexture);
 	glDeleteTextures(1, &m_DiffuseTexture);
 	glDeleteProgram(m_ShaderProgram);
@@ -161,6 +170,13 @@ void GameObject::loadNormalTexture(const string & filename)
 {
 	m_NormalTexture = loadTextureFromFile(filename);
 	glBindTexture(GL_TEXTURE_2D, m_NormalTexture);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void GameObject::loadHeightTexture(const string & filename)
+{
+	m_HeightTexture = loadTextureFromFile(filename);
+	glBindTexture(GL_TEXTURE_2D, m_HeightTexture);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
@@ -211,6 +227,12 @@ void GameObject::copyVertexData(Vertex * pVertex, int numberOfVertices, int * pI
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(void**)(offsetof(Vertex, normal)));
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		(void**)(offsetof(Vertex, tangent)));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+		(void**)(offsetof(Vertex, binormal)));
 }
 
 

@@ -87,6 +87,7 @@ public:
 	};
 
 	void loadNormalTexture(const string& filename);
+	void loadHeightTexture(const string& filename);
 
 private:
 	GameObject * m_pParent;
@@ -111,6 +112,8 @@ private:
 	GLuint m_ShaderProgram;
 	GLuint m_DiffuseTexture;
 	GLuint m_SpecularTexture;
+	GLuint m_NormalTexture;
+	GLuint m_HeightTexture;
 	GLuint m_Sampler;
 
 	//Materials
@@ -122,7 +125,7 @@ private:
 	vec3 m_Tangent;
 	vec3 m_Binormal;
 
-	GLuint m_NormalTexture;
+
 };
 
 #endif
